@@ -4,11 +4,15 @@ import { useState } from "react";
 import { supabase } from "@/services/supabaseClient";
 
 export default function RegisterPage() {
+  // Estados del formulario
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  // Función para registrar usuario
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -17,58 +21,68 @@ export default function RegisterPage() {
     const { error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          full_name: fullName,
+          phone: phone,
+        },
+      },
     });
 
     if (error) {
       setMessage(error.message);
     } else {
-      setMessage(
-        "Registro exitoso. Revisa tu correo para confirmar la cuenta.",
-      );
+      setMessage("Cuenta creada exitosamente 🎉 Revisa tu correo.");
     }
 
     setLoading(false);
   };
 
   return (
-    <section className="auth-page">
-      <div className="container">
-        <h1 className="text-center mb-4">Crear cuenta</h1>
+    <div className="auth-container">
+      <img src="/decor/bakery.png" className="decor-left" />
+      <img src="/decor/baker.png" className="decor-right" />
+      <form onSubmit={handleRegister} className="auth-form">
+        <h1>Crear cuenta</h1>
 
-        <form onSubmit={handleRegister} className="auth-form">
-          <div className="mb-3">
-            <label className="form-label">Correo electrónico</label>
-            <input
-              type="email"
-              className="form-control"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+        <input
+          type="text"
+          placeholder="Nombre completo"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          required
+        />
 
-          <div className="mb-3">
-            <label className="form-label">Contraseña</label>
-            <input
-              type="password"
-              className="form-control"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+        <input
+          type="text"
+          placeholder="Teléfono"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          required
+        />
 
-          <button
-            type="submit"
-            className="btn btn-cta w-100"
-            disabled={loading}
-          >
-            {loading ? "Registrando..." : "Registrarme"}
-          </button>
+        <input
+          type="email"
+          placeholder="Correo electrónico"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-          {message && <p className="text-center mt-3">{message}</p>}
-        </form>
-      </div>
-    </section>
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <button disabled={loading}>
+          {loading ? "Creando cuenta..." : "Registrarme"}
+        </button>
+
+        {message && <p>{message}</p>}
+      </form>
+    </div>
   );
 }

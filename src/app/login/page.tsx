@@ -29,30 +29,34 @@ export default function LoginPage() {
   };
 
   return (
-    <form onSubmit={handleLogin} className="auth-form">
-      <h1>Iniciar sesión</h1>
+    <div className="auth-container">
+      <img src="/decor/cake.png" className="decor-left" />
+      <img src="/decor/cupcake.png" className="decor-right" />
+      <form onSubmit={handleLogin} className="auth-form">
+        <h1>Iniciar sesión</h1>
 
-      <input
-        type="email"
-        placeholder="Correo electrónico"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+        <input
+          type="email"
+          placeholder="Correo electrónico"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-      <input
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-      <button disabled={loading}>
-        {loading ? "Ingresando..." : "Iniciar sesión"}
-      </button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Ingresando..." : "Iniciar sesión"}
+        </button>
 
-      {message && <p>{message}</p>}
-    </form>
+        {message && <p className="auth-message">{message}</p>}
+      </form>
+    </div>
   );
 }
