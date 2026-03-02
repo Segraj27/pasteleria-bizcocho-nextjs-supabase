@@ -1,6 +1,6 @@
 # Pastelería El Bizcocho
 
-## 📌 Descripción del Proyecto
+## Descripción del Proyecto
 
 Sistema de gestión de pedidos desarrollado con Next.js y Supabase.
 Este repositorio incluye la implementación del módulo API para la gestión de pedidos.
