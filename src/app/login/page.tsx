@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { createSupabaseBrowserClient } from "@/lib/supabaseClient";
+import { supabase } from "@/services/supabaseClient";
 
 export default function LoginPage() {
-  const supabase = createSupabaseBrowserClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,6 +23,7 @@ export default function LoginPage() {
       setMessage(error.message);
     } else {
       setMessage("Inicio de sesión exitoso 🎉");
+      window.location.href = "/pedidos";
     }
 
     setLoading(false);

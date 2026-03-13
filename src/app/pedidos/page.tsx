@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/services/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import { User } from "@supabase/supabase-js";
 
 interface Pastel {
@@ -21,41 +21,43 @@ export default function PedidosPage() {
   const [pasteles, setPasteles] = useState<Pastel[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // 🔐 Verificar sesión
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data } = await supabase.auth.getUser();
-
-      if (!data.user) {
-        router.push("/login");
-      } else {
-        setUser(data.user);
-      }
-    };
-
-    checkUser();
-  }, [router]);
-
   // 🎂 Obtener pasteles
   useEffect(() => {
-    const fetchPasteles = async () => {
-      const { data, error } = await supabase
+    const initPage = async () => {
+      setLoading(true);
+
+      const { data, error } = await supabase.auth.getUser();
+
+      if (error) {
+        console.error(error);
+        setLoading(false);
+        return;
+      }
+
+      if (!data.user) {
+        setLoading(false);
+        router.replace("/login");
+        return;
+      }
+
+      setUser(data.user);
+
+      const { data: pastelesData, error: pastelesError } = await supabase
         .from("pasteles")
         .select("*")
         .eq("activo", true);
 
-      if (error) {
-        console.error("Error al obtener pasteles:", error);
+      if (pastelesError) {
+        console.error("Error al obtener pasteles:", pastelesError);
       } else {
-        setPasteles((data as Pastel[]) || []);
+        setPasteles((pastelesData as Pastel[]) || []);
       }
 
       setLoading(false);
     };
 
-    fetchPasteles();
+    initPage();
   }, []);
-
   if (loading) {
     return <p className="text-center mt-5">Cargando pasteles...</p>;
   }
