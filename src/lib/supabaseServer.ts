@@ -12,8 +12,12 @@ export async function createSupabaseServerClient() {
         get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        set() {},
-        remove() {},
+        set() {
+          // no necesario en API
+        },
+        remove() {
+          // no necesario en API
+        },
       },
     },
   );

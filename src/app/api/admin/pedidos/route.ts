@@ -1,15 +1,18 @@
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const supabase = await createSupabaseServerClient();
 
     const {
       data: { user },
+      error: userError,
     } = await supabase.auth.getUser();
 
-    if (!user) {
+    console.log("USER:", user);
+
+    if (userError || !user) {
       return NextResponse.json(
         { error: "Usuario no autenticado" },
         { status: 401 },
@@ -33,7 +36,7 @@ export async function GET() {
         cantidad,
         estado,
         created_at,
-        pasteles(nombre),
+        pasteles(nombre)
       `,
       )
       .order("created_at", { ascending: false });
