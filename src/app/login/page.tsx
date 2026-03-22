@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/services/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -14,25 +14,41 @@ export default function LoginPage() {
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
+    // ❌ error en login
     if (error) {
       setMessage(error.message);
-    } else {
-      setMessage("Inicio de sesión exitoso 🎉");
-      window.location.href = "/pedidos";
+      setLoading(false);
+      return;
     }
 
-    setLoading(false);
+    // 🔥 verificar sesión correctamente
+    const session = data.session;
+
+    console.log("SESSION LOGIN:", session);
+
+    if (!session) {
+      setMessage("No se guardó la sesión");
+      setLoading(false);
+      return;
+    }
+
+    // ✅ login exitoso
+    setMessage("Inicio de sesión exitoso 🎉");
+
+    // 🔥 recarga completa para sincronizar sesión
+    window.location.href = "/pedidos";
   };
 
   return (
     <div className="auth-container">
       <img src="/decor/cake.png" className="decor-left" />
       <img src="/decor/cupcake.png" className="decor-right" />
+
       <form onSubmit={handleLogin} className="auth-form">
         <h1>Iniciar sesión</h1>
 

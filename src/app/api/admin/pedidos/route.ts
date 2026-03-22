@@ -1,49 +1,40 @@
 import { NextResponse } from "next/server";
-import { createSupabaseServerClient } from "@/lib/supabaseServer";
+import { createPedido, getPedidosByUser } from "@/services/pedidos.service";
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
-    const supabase = await createSupabaseServerClient();
+    const body = await request.json();
 
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
+    const { pastel_id, cantidad, mensaje_personalizado } = body;
 
-    console.log("USER:", user);
-
-    if (userError || !user) {
+    // Validación básica
+    if (!pastel_id || !cantidad) {
       return NextResponse.json(
-        { error: "Usuario no autenticado" },
-        { status: 401 },
+        { error: "pastel_id y cantidad son obligatorios" },
+        { status: 400 },
       );
     }
 
-    const role = user.app_metadata.role;
+    const pedido = await createPedido({
+      pastel_id,
+      cantidad,
+      mensaje_personalizado,
+    });
 
-    if (role !== "admin") {
-      return NextResponse.json(
-        { error: "No tienes permisos" },
-        { status: 403 },
-      );
-    }
+    return NextResponse.json(pedido, { status: 201 });
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Error interno del servidor";
 
-    const { data, error } = await supabase
-      .from("pedidos")
-      .select(
-        `
-        id,
-        cantidad,
-        estado,
-        created_at,
-        pasteles(nombre)
-      `,
-      )
-      .order("created_at", { ascending: false });
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
 
-    if (error) throw error;
+export async function GET() {
+  try {
+    const pedidos = await getPedidosByUser();
 
-    return NextResponse.json(data, { status: 200 });
+    return NextResponse.json(pedidos, { status: 200 });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Error interno del servidor";
