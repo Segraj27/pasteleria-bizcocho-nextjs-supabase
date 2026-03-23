@@ -46,9 +46,6 @@ export default function Page() {
     cargar();
   }, []);
 
- 
-
-
   return (
    <div>
   <h1 style={{padding:"40px"}}>Nuestras Lista de Pasteles</h1>
