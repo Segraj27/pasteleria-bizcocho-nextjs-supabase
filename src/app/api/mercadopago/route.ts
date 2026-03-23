@@ -1,3 +1,4 @@
+import { supabase } from "@/lib/supabaseClient";
 import MercadoPagoConfig, { Preference } from "mercadopago";
 
 const client = new MercadoPagoConfig({
@@ -6,6 +7,23 @@ const client = new MercadoPagoConfig({
 
 export async function POST(request: Request) {
   try {
+        // 1. Crear pedido en Supabase
+const { data: pedido, error } = await supabase
+  .from("pedidos")
+  .insert([
+    {
+      cantidad: 1,
+      estado: "pendiente",
+    },
+  ])
+  .select()
+  .single();
+
+if (error) {
+  console.error("Error creando pedido:", error);
+  return new Response("Error", { status: 500 });
+}
+
     const body = await request.json();
 
     // Convertir y asegurar tipos
@@ -25,6 +43,8 @@ export async function POST(request: Request) {
             currency_id: "COP",
           },
         ],
+         // 2. Conectar el pedido con Mercado Pago
+        external_reference: pedido.id,
       },
     };
 
