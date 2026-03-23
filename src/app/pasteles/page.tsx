@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import  Modalpastel from "@/app/pasteles/modalpastel"
 import { getDisplayName } from "next/dist/shared/lib/utils";
 
 
@@ -75,11 +76,34 @@ export default function Page() {
         />
 
         <p>{p.descripcion}</p>
-        <p><strong>${p.precio}</strong></p>
+         {/*<p><strong>${p.precio}</strong></p>*/}
         
       </div>
     ))}
-  </div>
+
 </div>
+
+      <section className="hero">
+        <div className="container text-center">
+          <h1 className="hero-title">
+            🎂 Personaliza tu pastel para tus Momentos Especiales
+          </h1>
+          <div className="hero-actions">
+            <button
+              type="button"
+              className="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Personaliza tu Pastel
+            </button>
+          </div>
+        </div>
+      </section>
+    <Modalpastel />
+   
+
+  </div>
+
   );
 }
