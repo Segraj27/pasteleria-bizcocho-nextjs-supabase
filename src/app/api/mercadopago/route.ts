@@ -1,25 +1,39 @@
-import { MercadoPagoConfig, Preference } from "mercadopago";
+import MercadoPagoConfig, { Preference } from "mercadopago";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
 });
 
-export async function POST() {
-  const preference = new Preference(client);
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
 
-  const response = await preference.create({
-  body: {
-    items: [
-      {
-          title: "Producto ejemplo",
-          quantity: 1,
-          unit_price: 20000,
-          currency_id: "COP",
-          id: ""
+    // Convertir y asegurar tipos
+    const title = String(body.title);
+    const price = Number(body.price);
+    const quantity = Number(body.quantity);
+
+    const preference = new Preference(client);
+
+    const preferenceData = {
+      body: {
+        items: [
+          {
+            title,
+            quantity,
+            unit_price: price,
+            currency_id: "COP",
+          },
+        ],
       },
-    ],
-  },
-});
+    };
 
-  return Response.json({ id: response.id });
+    const response = await preference.create(preferenceData as never);
+
+    return Response.json({ id: response.id });
+  } catch (error) {
+    console.error("ERROR MP:", error);
+
+    return Response.json({ error: "Error creando pago" }, { status: 500 });
+  }
 }

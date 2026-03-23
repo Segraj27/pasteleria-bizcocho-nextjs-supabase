@@ -24,11 +24,19 @@ export default function PedidosPage() {
   const pagar = async () => {
     const res = await fetch("/api/mercadopago", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: "Pastel de chocolate",
+        price: 20000,
+        quantity: 1,
+      }),
     });
 
     const data = await res.json();
 
-   window.location.href = `https://www.mercadopago.com.co/checkout/v1/redirect?pref_id=${data.id}`;
+    window.location.href = `https://www.mercadopago.com.co/checkout/v1/redirect?pref_id=${data.id}`;
   };
 
   useEffect(() => {
