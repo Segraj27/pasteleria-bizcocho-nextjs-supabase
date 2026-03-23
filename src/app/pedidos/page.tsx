@@ -20,6 +20,17 @@ export default function PedidosPage() {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
 
+  //  FUNCIÓN DE PAGO (MERCADO PAGO)
+  const pagar = async () => {
+    const res = await fetch("/api/mercadopago", {
+      method: "POST",
+    });
+
+    const data = await res.json();
+
+   window.location.href = `https://www.mercadopago.com.co/checkout/v1/redirect?pref_id=${data.id}`;
+  };
+
   useEffect(() => {
     const initPage = async () => {
       setLoading(true);
@@ -145,6 +156,13 @@ export default function PedidosPage() {
           ))}
         </tbody>
       </table>
+
+      {/* BOTÓN DE PAGO */}
+      <div className="text-center mt-4">
+        <button onClick={pagar} className="btn btn-primary">
+          Pagar pedido
+        </button>
+      </div>
     </div>
   );
 }
