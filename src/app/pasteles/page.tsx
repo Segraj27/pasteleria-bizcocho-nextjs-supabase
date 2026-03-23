@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import  Modalpastel from "@/app/pasteles/modalpastel"
-import { getDisplayName } from "next/dist/shared/lib/utils";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 
 type Pastel = {
@@ -20,7 +20,7 @@ async function obtenerPasteles() {
   const { data, error } = await supabase
     .from("pasteles") // 👉 nombre de la tabla
     .select("*")      // 👉 trae todos los campos
-   .eq("activo", true); // 👉 solo los activos
+    .eq("activo", true); // 👉 solo los activos
 
   if (error) {
     console.error("Error no hay datos", error);
@@ -30,9 +30,27 @@ async function obtenerPasteles() {
   return data; // 👉 devuelve los datos
 }
 
+
 // 🔹 Componente principal (la página)
 export default function Page() {
+
   const [pasteles, setPasteles] = useState<any[]>([]);
+ 
+
+  useEffect(() => {
+    import("bootstrap/dist/js/bootstrap.bundle.min.js" as any); // cargamos bootstrap para el modal de la ventana 
+  }, []);
+
+  function abrirModal() {
+    const modal = document.getElementById("modalPastel"); //aplicamos la funcion a el elemento a abrir 
+    
+    if (modal) {
+      const bsModal = new (window as any).bootstrap.Modal(modal);
+      bsModal.show();
+    }
+  }
+
+  //const [mostrarModal, setMostrarModal] = useState(false);
 
   // 🔹 Se ejecuta cuando carga la página
   useEffect(() => {
@@ -48,40 +66,42 @@ export default function Page() {
   }, []);
 
   return (
-   <div>
-  <h1 style={{padding:"40px"}}>Nuestras Lista de Pasteles</h1>
+    <div>
+      <h1 style={{ display: "flex", padding: "40px", margin: "0 auto", justifyContent: "center", alignItems: "center", }}>Nuestra Lista de Pasteles</h1>
 
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", // 👈 3 columnas
-      gap: "20px", //margenes de espaciado
-    }}
-  >
-    {pasteles.map((p) => (
       <div
-        key={p.id}
         style={{
-          border: "1px solid #c82323",
-          padding: "10px",
-          borderRadius: "10px",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", // 👈 3 columnas
+          gap: "20px", //margenes de espaciado
         }}
       >
-        <h2>{p.nombre}</h2>
+        {pasteles.map((p) => (
+          <div
+            key={p.id}
+            style={{
+              border: "1px solid #c82323",
+              padding: "10px",
+              borderRadius: "10px",
+            }}
 
-       <img
-          src={p.imagen_url}
-          width="100%"
-          style={{ borderRadius: "10px" }}
-        />
+            className="card"
+          >
+            <h2>{p.nombre}</h2>
 
-        <p>{p.descripcion}</p>
-         {/*<p><strong>${p.precio}</strong></p>*/}
-        
+            <img
+              src={p.imagen_url}
+              width="100%"
+              height="200px"
+              style={{ borderRadius: "10px" }}
+            />
+
+            <p>{p.descripcion}</p>
+            {/*<p><strong>${p.precio}</strong></p>*/}
+           
+          </div>
+        ))}
       </div>
-    ))}
-
-</div>
 
       <section className="hero">
         <div className="container text-center">
@@ -104,6 +124,5 @@ export default function Page() {
    
 
   </div>
-
   );
 }
