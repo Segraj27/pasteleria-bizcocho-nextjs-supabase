@@ -100,6 +100,18 @@ export default function Navbar() {
               </Link>
             </li>
 
+              <li className="nav-item">
+              <Link
+                href="/pasteles"
+                className={`nav-link ${
+                  pathname === "/pasteles" ? "active" : ""
+                }`}
+              >
+                <i className="bi bi-cake2 me-1"></i>
+                Pasteles
+              </Link>
+            </li>
+
             {/* 🔐 Zona dinámica */}
             {!user ? (
               <>
