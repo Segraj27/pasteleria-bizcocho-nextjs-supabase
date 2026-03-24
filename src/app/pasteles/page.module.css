@@ -1,0 +1,9 @@
+.card {
+  background-color: #f8f0f0;  /* color base */
+  transition: background-color 0.3s;  /* cambio suave */
+}
+
+/* Cambiar color según posición en el grid */
+.card:nth-child(1):hover { background-color: #fce4ec; } 
+.card:nth-child(2):hover { background-color: #fff3e0; } 
+.card:nth-child(3):hover   { background-color: #e8f5e9; } 

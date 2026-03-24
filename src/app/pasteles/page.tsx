@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import  Modalpastel from "@/app/pasteles/modalpastel"
+import  styles  from "@/app/pasteles/page.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+<style>
+/* Reemplaza tu import actual por este */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+</style>
 
 
 type Pastel = {
@@ -36,7 +42,6 @@ export default function Page() {
 
   const [pasteles, setPasteles] = useState<any[]>([]);
  
-
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js" as any); // cargamos bootstrap para el modal de la ventana 
   }, []);
@@ -66,8 +71,11 @@ export default function Page() {
   }, []);
 
   return (
+
     <div>
-      <h1 style={{ display: "flex", padding: "40px", margin: "0 auto", justifyContent: "center", alignItems: "center", }}>Nuestra Lista de Pasteles</h1>
+   
+      <h1 style={{ display: "flex", padding: "40px", margin: "0 auto", justifyContent: "center", alignItems: "center", fontFamily:"'Montserrat', sans-serif" }}>Nuestra Lista de Pasteles</h1>
+      <p>Escoge el que te guste oh personalizalo para cada ocasion a tu medida tu eliges:</p>
 
       <div
         style={{
@@ -85,9 +93,9 @@ export default function Page() {
               borderRadius: "10px",
             }}
 
-            className="card"
+            className={styles.card}
           >
-            <h2>{p.nombre}</h2>
+            <h2 style={{display:"flex", justifyContent:"center"}}>{p.nombre }</h2>
 
             <img
               src={p.imagen_url}
@@ -105,7 +113,7 @@ export default function Page() {
 
       <section className="hero">
         <div className="container text-center">
-          <h1 className="hero-title">
+          <h1 className="hero-title" style={{fontFamily:"'Roboto', sans-serif"}}>
             🎂 Personaliza tu pastel para tus Momentos Especiales
           </h1>
           <div className="hero-actions">

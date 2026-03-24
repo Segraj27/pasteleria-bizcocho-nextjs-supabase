@@ -18,8 +18,7 @@ export function SizeSelector({ value, onChange }: Props) {
   return (
     <div className={styles.container}>
   <h3 className={styles.title}>
-    <Users style={{ width: 20, height: 20, color: "#ec4899" }} />
-    2. Selecciona el tamaño
+   
   </h3>
 
   <div className={styles.grid}>
