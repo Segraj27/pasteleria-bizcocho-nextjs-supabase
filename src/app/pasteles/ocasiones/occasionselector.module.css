@@ -1,0 +1,79 @@
+/* Contenedor que separa la sección */
+.container {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* --- CONFIGURACIÓN DE COLUMNAS (RESPONSIVE) --- */
+.grid {
+  display: grid;
+  gap: 12px;
+  /* MÓVIL: 1 columna (ocupa todo el ancho) */
+  grid-template-columns: 1fr;
+}
+
+/* TABLET: 2 columnas (min-width: 768px) */
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* PC / TV: 4 columnas (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* --- ESTILO DE LOS BOTONES --- */
+.button {
+  display: flex;
+  flex-direction: row; /* Icono al lado del texto como en tu imagen */
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  border: 1.5px solid #e5e7eb; /* Gris claro por defecto */
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover: Cuando pasas el mouse */
+.button:hover {
+  background-color: #fff1f2;
+  border-color: #fda4af;
+}
+
+/* ESTADO SELECCIONADO: Colores de tu marca */
+.selected {
+  background-color: #fff1f2 !important; /* Fondo rosado muy claro */
+  border-color: #d81b60 !important;    /* Borde cereza fuerte */
+  box-shadow: 0 2px 5px rgba(216, 27, 96, 0.1);
+}
+
+/* Iconos */
+.icon {
+  width: 18px;
+  height: 18px;
+  color: #6b7280; /* Gris apagado */
+}
+
+.selected .icon {
+  color: #d81b60 !important; /* El icono se vuelve cereza al seleccionar */
+}
+
+/* Texto */
+.text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.selected .text {
+  color: #d81b60;
+  font-weight: 700; /* Texto más grueso cuando se selecciona */
+}
