@@ -24,16 +24,21 @@ export async function POST(req: Request) {
       const pedidoId = paymentData.external_reference;
 
       //Actualizar pedido en Supabase
-      await supabase
-        .from("pedidos")
-        .update({ estado: "pagado" })
-        .eq("id", pedidoId);
+      if (status === "approved") {
+        await supabase
+          .from("pedidos")
+          .update({ estado: "pagado" })
+          .eq("id", pedidoId);
+
+        console.log("Pedido PAGADO:", pedidoId);
+      } else {
+        console.log("Pago no aprobado:", status);
+      }
 
       console.log("Pedido actualizado:", pedidoId);
     }
 
     return NextResponse.json({ received: true });
-
   } catch (error) {
     console.error("Error en webhook:", error);
     return NextResponse.json({ error: "Error" }, { status: 500 });

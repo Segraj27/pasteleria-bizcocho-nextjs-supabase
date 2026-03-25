@@ -1,5 +1,6 @@
-import { supabase } from "@/lib/supabaseClient";
 import MercadoPagoConfig, { Preference } from "mercadopago";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
@@ -7,33 +8,60 @@ const client = new MercadoPagoConfig({
 
 export async function POST(request: Request) {
   try {
-        // 1. Crear pedido en Supabase
-const { data: pedido, error } = await supabase
-  .from("pedidos")
-  .insert([
-    {
-      cantidad: 1,
-      estado: "pendiente",
-    },
-  ])
-  .select()
-  .single();
+    // Crear cliente de Supabase con sesión
+    const cookieStore = await cookies();
 
-if (error) {
-  console.error("Error creando pedido:", error);
-  return new Response("Error", { status: 500 });
-}
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            const cookie = cookieStore.get(name);
+            return cookie?.value;
+          },
+        },
+      },
+    );
 
+    // Obtener usuario autenticado
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return Response.json({ error: "No autenticado" }, { status: 401 });
+    }
+
+    // Obtener datos del frontend
     const body = await request.json();
 
-    // Convertir y asegurar tipos
     const title = String(body.title);
     const price = Number(body.price);
     const quantity = Number(body.quantity);
 
+    // Crear pedido en la BD
+    const { data: pedido, error } = await supabase
+      .from("pedidos")
+      .insert([
+        {
+          user_id: user.id,
+          cantidad: quantity,
+          estado: "pendiente",
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error creando pedido:", error);
+      return Response.json({ error: "Error creando pedido" }, { status: 500 });
+    }
+
+    // Crear preferencia de pago
     const preference = new Preference(client);
 
-    const preferenceData = {
+    const response = await preference.create({
       body: {
         items: [
           {
@@ -43,12 +71,10 @@ if (error) {
             currency_id: "COP",
           },
         ],
-         // 2. Conectar el pedido con Mercado Pago
+        // pago con el pedido
         external_reference: pedido.id,
       },
-    };
-
-    const response = await preference.create(preferenceData as never);
+    } as never);
 
     return Response.json({ id: response.id });
   } catch (error) {
