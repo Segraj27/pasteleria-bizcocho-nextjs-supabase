@@ -72,48 +72,69 @@ export default function Page() {
 
   return (
 
-    <div>
-   
-      <h1 style={{ display: "flex", padding: "40px", margin: "0 auto", justifyContent: "center", alignItems: "center", fontFamily:"'Montserrat', sans-serif" }}>Nuestra Lista de Pasteles</h1>
-      <p>Escoge el que te guste oh personalizalo para cada ocasion a tu medida tu eliges:</p>
+  /* 1. CONTENEDOR DE FONDO: Ocupa todo el ancho */
+  <div style={{ backgroundColor: "", width: "100%", padding: "40px 0" }}>
+    
+    {/* 2. CONTENEDOR DE CONTENIDO: Limita el ancho y centra las cosas */}
+    <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 10px" }}>
+      
+      <h1 style={{ 
+          display: "flex", 
+          justifyContent: "center", 
+          alignItems: "center", 
+          fontFamily: "'Montserrat', sans-serif",
+          marginBottom: "10px" // Espacio bajo el título
+      }}>
+        Nuestra Lista de Pasteles
+      </h1>
 
-      <div
-        style={{
+      <p style={{ textAlign: "center", marginBottom: "30px" }}>
+        Escoge el que te guste oh personalizalo para cada ocasion a tu medida tu eliges:
+      </p>
+
+      <div style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", // 👈 3 columnas
-          gap: "20px", //margenes de espaciado
-        }}
-      >
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "20px",
+      }}>
         {pasteles.map((p) => (
-          <div
-            key={p.id}
-            style={{
-              border: "1px solid #c82323",
-              padding: "10px",
-              borderRadius: "10px",
-            }}
+  <div
+    key={p.id}
+    className={styles.card} // 👈 Mantenemos la clase original para el hover con el mouse en las cards
+    style={{
+      border: "1px solid #c82323",
+      padding: "15px",
+      borderRadius: "10px",
+      cursor: "pointer" 
+    }}
+  >
+    <h2 style={{ display: "flex", justifyContent: "center", fontSize: "1.2rem" }}>
+      {p.nombre}
+    </h2>
 
-            className={styles.card}
-          >
-            <h2 style={{display:"flex", justifyContent:"center"}}>{p.nombre }</h2>
+    <img
+      src={p.imagen_url}
+      style={{ 
+        width: "100%", 
+        height: "200px", 
+        borderRadius: "10px", 
+        objectFit: "cover" 
+      }}
+      alt={p.nombre}
+    />
 
-            <img
-              src={p.imagen_url}
-              width="100%"
-              height="200px"
-              style={{ borderRadius: "10px" }}
-            />
-
-            <p>{p.descripcion}</p>
-            {/*<p><strong>${p.precio}</strong></p>*/}
-           
-          </div>
-        ))}
+    <p style={{ marginTop: "10px",
+      display: "flex", 
+      justifyContent: "center", 
+     }}>{p.descripcion}</p>
+  </div>
+))}
       </div>
 
-      <section className="hero">
+      {/* Sección Hero dentro del mismo flujo o fuera si quieres otro color */}
+      <section className="hero" style={{ marginTop: "50px" }}>
         <div className="container text-center">
-          <h1 className="hero-title" style={{fontFamily:"'Roboto', sans-serif"}}>
+          <h1 className="hero-title" style={{ fontFamily: "'Roboto', sans-serif" }}>
             🎂 Personaliza tu pastel para tus Momentos Especiales
           </h1>
           <div className="hero-actions">
@@ -128,9 +149,10 @@ export default function Page() {
           </div>
         </div>
       </section>
-    <Modalpastel />
-   
 
-  </div>
-  );
+    </div> {/* Cierre del contenedor de contenido */}
+    
+    <Modalpastel />
+  </div> /* Cierre del contenedor de fondo */
+);
 }
