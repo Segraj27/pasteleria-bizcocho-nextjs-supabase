@@ -111,7 +111,7 @@ export default function Modalpastel() {
                         {size}
                       </span>
                     </div>
-                    {/* Añade aquí más filas de resumen conforme agregues lógica */}
+                    {/* aquí se añade más filas de resumen de lógica */}
 
                     <div className="mt-5 pt-3 border-top text-center">
                       <p className="text-muted mb-0 small">Precio Estimado</p>

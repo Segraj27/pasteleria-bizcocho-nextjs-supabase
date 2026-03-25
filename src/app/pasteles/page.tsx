@@ -2,157 +2,163 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import  Modalpastel from "@/app/pasteles/modalpastel"
-import  styles  from "@/app/pasteles/page.module.css";
+import Modalpastel from "@/app/pasteles/modalpastel"
+import styles from "@/app/pasteles/page.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-<style>
-/* Reemplaza tu import actual por este */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-</style>
+// Fuentes: He añadido 'Playfair Display' para ese toque de elegancia en títulos
+const fontStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
+`;
 
-
-type Pastel = {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  imagen_url: string;
-  estado: boolean;
-};
-
-// 🔹 Función para traer los pasteles desde la base de datos
 async function obtenerPasteles() {
   const { data, error } = await supabase
-    .from("pasteles") // 👉 nombre de la tabla
-    .select("*")      // 👉 trae todos los campos
-    .eq("activo", true); // 👉 solo los activos
+    .from("pasteles")
+    .select("*")
+    .eq("activo", true);
 
   if (error) {
     console.error("Error no hay datos", error);
     return [];
   }
-
-  return data; // 👉 devuelve los datos
+  return data;
 }
 
-
-// 🔹 Componente principal (la página)
 export default function Page() {
-
   const [pasteles, setPasteles] = useState<any[]>([]);
  
   useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js" as any); // cargamos bootstrap para el modal de la ventana 
+    import("bootstrap/dist/js/bootstrap.bundle.min.js" as any);
   }, []);
 
-  function abrirModal() {
-    const modal = document.getElementById("modalPastel"); //aplicamos la funcion a el elemento a abrir 
-    
-    if (modal) {
-      const bsModal = new (window as any).bootstrap.Modal(modal);
-      bsModal.show();
-    }
-  }
-
-  //const [mostrarModal, setMostrarModal] = useState(false);
-
-  // 🔹 Se ejecuta cuando carga la página
   useEffect(() => {
     async function cargar() {
-      const data = await obtenerPasteles(); // 👉 llama la función
-
-      console.log("DATOS 👉", data); // 👈 DEBUG
-
-      setPasteles(data); // 👉 guarda los datos en el estado
+      const data = await obtenerPasteles();
+      setPasteles(data);
     }
-
     cargar();
   }, []);
 
   return (
-
-  /* 1. CONTENEDOR DE FONDO: Ocupa todo el ancho */
-  <div style={{ backgroundColor: "", width: "100%", padding: "40px 0" }}>
-    
-    {/* 2. CONTENEDOR DE CONTENIDO: Limita el ancho y centra las cosas */}
-    <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 10px" }}>
+    // 1. FONDO: Usamos un tono crema mas suave (#FCF9F6) dandole un 100 de tamaño y espacios en las cards
+    <div style={{ backgroundColor: "#FCF9F6", width: "100%", padding: "60px 0", minHeight: "100vh" }}>
+      <style>{fontStyles}</style>
       
-      <h1 style={{ 
-          display: "flex", 
-          justifyContent: "center", 
-          alignItems: "center", 
-          fontFamily: "'Montserrat', sans-serif",
-          marginBottom: "10px" // Espacio bajo el título
-      }}>
-        Nuestra Lista de Pasteles
-      </h1>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+        
+        <h1 style={{ 
+            textAlign: "center",
+            fontFamily: "'Playfair Display', serif", // Toque elegante
+            color: "#3D2B1F", // Café chocolate oscuro
+            fontSize: "3rem",
+            marginBottom: "10px"
+        }}>
+          Nuestra Lista de Pasteles
+        </h1>
 
-      <p style={{ textAlign: "center", marginBottom: "30px" }}>
-        Escoge el que te guste oh personalizalo para cada ocasion a tu medida tu eliges:
-      </p>
+        <p style={{ 
+            textAlign: "center", 
+            fontFamily: "'Montserrat', sans-serif",
+            color: "#70645C",
+            marginBottom: "50px",
+            fontSize: "1.1rem"
+        }}>
+          Elige tu favorito o personalízalo para cada ocasión a tu medida.
+        </p>
 
-      <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "20px",
-      }}>
-        {pasteles.map((p) => (
-  <div
-    key={p.id}
-    className={styles.card} // 👈 Mantenemos la clase original para el hover con el mouse en las cards
-    style={{
-      border: "1px solid #c82323",
-      padding: "15px",
-      borderRadius: "10px",
-      cursor: "pointer" 
-    }}
-  >
-    <h2 style={{ display: "flex", justifyContent: "center", fontSize: "1.2rem" }}>
-      {p.nombre}
-    </h2>
-
-    <img
-      src={p.imagen_url}
-      style={{ 
-        width: "100%", 
-        height: "200px", 
-        borderRadius: "10px", 
-        objectFit: "cover" 
-      }}
-      alt={p.nombre}
-    />
-
-    <p style={{ marginTop: "10px",
-      display: "flex", 
-      justifyContent: "center", 
-     }}>{p.descripcion}</p>
-  </div>
-))}
-      </div>
-
-      {/* Sección Hero dentro del mismo flujo o fuera si quieres otro color */}
-      <section className="hero" style={{ marginTop: "50px" }}>
-        <div className="container text-center">
-          <h1 className="hero-title" style={{ fontFamily: "'Roboto', sans-serif" }}>
-            🎂 Personaliza tu pastel para tus Momentos Especiales
-          </h1>
-          <div className="hero-actions">
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
+        {/* GRID DE PASTELES */}
+        <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "30px",
+        }}>
+          {pasteles.map((p) => (
+            <div
+              key={p.id}
+              className={styles.card} 
+              style={{
+                //backgroundColor: "#ffffff",
+                padding: "20px",
+                borderRadius: "24px", // Bordes más redondeados
+                border: "1px solid #F1E9E4",
+                boxShadow: "0 10px 20px rgba(0,0,0,0.03)", // Sombra suave
+                cursor: "pointer",
+                transition: "all 0.3s ease"
+              }}
             >
-              Personaliza tu Pastel
-            </button>
-          </div>
-        </div>
-      </section>
+              <div style={{ overflow: 'hidden', borderRadius: '18px', marginBottom: '15px' }}>
+                <img
+                  src={p.imagen_url}
+                  style={{ 
+                    width: "100%", 
+                    height: "250px", 
+                    objectFit: "cover",
+                    transition: "transform 0.5s ease"
+                  }}
+                  alt={p.nombre}
+                  className={styles.cardImage} // Necesitarás añadir el hover scale en tu CSS
+                />
+              </div>
 
-    </div> {/* Cierre del contenedor de contenido */}
-    
-    <Modalpastel />
-  </div> /* Cierre del contenedor de fondo */
-);
+              <h2 style={{ 
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "1.5rem",
+                color: "#3D2B1F",
+                marginBottom: "10px"
+              }}>
+                {p.nombre}
+              </h2>
+
+              <p style={{ 
+                fontFamily: "'Montserrat', sans-serif",
+                color: "#8E8279",
+                fontSize: "0.95rem",
+                lineHeight: "1.5"
+              }}>{p.descripcion}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* SECCIÓN HERO / CTA para personalizar el pastel */}
+        <section style={{ 
+            marginTop: "80px",
+            padding: "60px 20px",
+            borderRadius: "30px",
+            background: "linear-gradient(135deg, #FDF2F2 0%, #FAE3E3 100%)", // Degradado suave
+            textAlign: "center"
+        }}>
+          <h2 style={{ 
+              fontFamily: "'Playfair Display', serif", 
+              color: "#3D2B1F",
+              fontSize: "2.2rem",
+              marginBottom: "25px"
+          }}>
+            🎂 Crea algo único para tus momentos especiales
+          </h2>
+          
+          <button
+            type="button"
+            className="btn"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            style={{ 
+              backgroundColor: "#8B5E3C", // Color chocolate para que quede homogeneo
+              color: "white",
+              padding: "12px 35px",
+              borderRadius: "50px", // Botón tipo píldora redondeando
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: "600",
+              fontSize: "1rem",
+              border: "none",
+              boxShadow: "0 4px 15px rgba(139, 94, 60, 0.3)"
+            }}
+          >
+            Personalizar mi Pastel
+          </button>
+        </section>
+
+      </div> 
+      <Modalpastel />
+    </div> 
+  );
 }
