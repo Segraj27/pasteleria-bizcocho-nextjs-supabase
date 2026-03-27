@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 import PastelCard from "@/components/PastelCard";
+import Footer from "@/components/Footer";
+import styles from "@/app/page.module.css"; // Asegúrate de tener este módulo para el layout
 
 export default function HomePage() {
   useEffect(() => {
@@ -25,62 +27,83 @@ export default function HomePage() {
   }, []);
 
   return (
-    <>
-      {/* HERO */}
-      <section className="hero">
-        <div className="container text-center">
-          <h1 className="hero-title">
-            🎂 Pasteles personalizados para tus Momentos Especiales
-          </h1>
+    /* 1. Contenedor Maestro: Mantiene el Footer al fondo */
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      
+      {/* 2. Wrapper del Contenido: Aquí manejamos el carrusel lateral */}
+      <div className={styles.mainGrid} style={{ flex: 1 }}>
+        
+        <main>
+          {/* HERO */}
+          <section className="hero">
+            <div className="container text-center">
+              <h1 className="hero-title">
+                🎂 Pasteles personalizados para tus Momentos Especiales
+              </h1>
 
-          <p className="hero-subtitle">
-            En <strong>Pastelería El Bizcocho</strong> creamos pasteles únicos,
-            hechos a mano, con amor y los mejores ingredientes.
-          </p>
+              <p className="hero-subtitle">
+                En <strong>Pastelería El Bizcocho</strong> creamos pasteles únicos,
+                hechos a mano, con amor y los mejores ingredientes.
+              </p>
 
-          <div className="hero-actions">
-            <a href="/pedidos" className="btn btn-cta btn-lg">
-              <i className="bi bi-cake2 me-2"></i>
-              Hacer mi pedido
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* PASTELES */}
-      <section className="pasteles">
-        <div className="container">
-          <h2 className="section-title text-center mb-5">
-            Nuestros pasteles más pedidos
-          </h2>
-
-          <div className="row g-4">
-            <div className="col-md-4 fade-in">
-              <PastelCard
-                titulo="Pastel de Chocolate"
-                descripcion="Bizcocho húmedo de chocolate con relleno de ganache."
-                imagen="/images/pastel-chocolate.jpg"
-              />
+              <div className="hero-actions">
+                <a href="/pedidos" className="btn btn-cta btn-lg">
+                  <i className="bi bi-cake2 me-2"></i>
+                  Hacer mi pedido
+                </a>
+              </div>
             </div>
+          </section>
 
-            <div className="col-md-4 fade-in">
-              <PastelCard
-                titulo="Pastel Red Velvet"
-                descripcion="Clásico red velvet con crema de queso suave."
-                imagen="/images/pastel-red-velvet.jpg"
-              />
-            </div>
+          {/* PASTELES */}
+          <section className="pasteles">
+            <div className="container">
+              <h2 className="section-title text-center mb-5">
+                Nuestros pasteles más pedidos
+              </h2>
 
-            <div className="col-md-4 fade-in">
-              <PastelCard
-                titulo="Pastel de Vainilla"
-                descripcion="Vainilla artesanal con frutas frescas."
-                imagen="/images/pastel-vainilla.jpg"
-              />
+              <div className="row g-4">
+                <div className="col-md-4 fade-in">
+                  <PastelCard
+                    titulo="Pastel de Chocolate"
+                    descripcion="Bizcocho húmedo de chocolate con relleno de ganache."
+                    imagen="/images/pastel-chocolate.jpg"
+                  />
+                </div>
+
+                <div className="col-md-4 fade-in">
+                  <PastelCard
+                    titulo="Pastel Red Velvet"
+                    descripcion="Clásico red velvet con crema de queso suave."
+                    imagen="/images/pastel-red-velvet.jpg"
+                  />
+                </div>
+
+                <div className="col-md-4 fade-in">
+                  <PastelCard
+                    titulo="Pastel de Vainilla"
+                    descripcion="Vainilla artesanal con frutas frescas."
+                    imagen="/images/pastel-vainilla.jpg"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </>
+          </section>
+        </main>
+
+        {/* 3. Carrusel Lateral (Derecha en PC, antes del Footer en Móvil) */}
+        <aside className={styles.sideCarousel}>
+           {/* Aquí insertas tu componente de Carrusel que se mueve solo */}
+           <div className={styles.stickyContainer}>
+             <p className="text-muted text-center">Inspiración del día...</p>
+             {/* <TuComponenteDeCarrusel /> */}
+           </div>
+        </aside>
+
+      </div>
+
+      {/* 4. FOOTER: Ahora sí, importado y bien ubicado */}
+      <Footer />
+    </div>
   );
 }
