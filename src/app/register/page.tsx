@@ -40,8 +40,8 @@ export default function RegisterPage() {
 
   return (
     <div className="auth-container">
-      <img src="/decor/bakery.png" className="decor-left" />
-      <img src="/decor/baker.png" className="decor-right" />
+    {/*  <img src="/decor/bakery.png" className="decor-left" />*/}
+     {/* <img src="/decor/baker.png" className="decor-right" />*/}
       <form onSubmit={handleRegister} className="auth-form">
         <h1>Crear cuenta</h1>
 
