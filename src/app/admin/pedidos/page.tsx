@@ -17,6 +17,7 @@ export default function PedidosPage() {
   const router = useRouter();
 
   const [user, setUser] = useState<User | null>(null);
+  const [isChecking, setIsChecking] = useState(true);
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,12 +57,14 @@ export default function PedidosPage() {
       }
 
       if (!user) {
-        setLoading(false);
         router.replace("/login");
         return;
       }
 
       setUser(user);
+
+      // YA validó → puede renderizar
+      setIsChecking(false);
 
       // Llamar API
       const res = await fetch("/api/admin/pedidos", {
@@ -103,6 +106,10 @@ export default function PedidosPage() {
 
   if (loading) {
     return <p className="text-center mt-5">Cargando pedidos...</p>;
+  }
+
+  if (isChecking) {
+    return null;
   }
 
   return (
