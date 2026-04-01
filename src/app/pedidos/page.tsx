@@ -41,7 +41,6 @@ export default function PedidosPage() {
 
     const data = await res.json();
 
-    // 🔥 USAR init_point (NO pref_id)
     if (data.init_point) {
       window.location.href = data.init_point;
     } else {
