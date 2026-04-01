@@ -1,14 +1,12 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
 
-export async function createPedido({
-  pastel_id,
-  cantidad,
-  mensaje_personalizado,
-}: {
+type PedidoInput = {
   pastel_id: string;
   cantidad: number;
   mensaje_personalizado?: string;
-}) {
+};
+
+export async function createPedido(data: PedidoInput) {
   const supabase = await createSupabaseServerClient();
 
   const {
@@ -21,20 +19,22 @@ export async function createPedido({
 
   const user = session.user;
 
-  const { data, error } = await supabase
+  const { data: result, error } = await supabase
     .from("pedidos")
     .insert({
       user_id: user.id,
-      pastel_id,
-      cantidad,
-      mensaje_personalizado,
+      pastel_id: data.pastel_id,
+      cantidad: data.cantidad,
+      mensaje_personalizado: data.mensaje_personalizado,
+      estado: "pendiente",
+      estado_pago: "pending",
     })
     .select()
     .single();
 
   if (error) throw error;
 
-  return data;
+  return result;
 }
 
 export async function getPedidosByUser() {
