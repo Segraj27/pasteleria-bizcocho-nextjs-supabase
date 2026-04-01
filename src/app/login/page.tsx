@@ -46,8 +46,8 @@ export default function LoginPage() {
 
   return (
     <div className="auth-container">
-      <img src="/decor/cake.png" className="decor-left" />
-      <img src="/decor/cupcake.png" className="decor-right" />
+     {/* <img src="/decor/cake.png" className="decor-left" />}
+      {/*<img src="/decor/cupcake.png" className="decor-right" />*/}
 
       <form onSubmit={handleLogin} className="auth-form">
         <h1>Iniciar sesión</h1>
