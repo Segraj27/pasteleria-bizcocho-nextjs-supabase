@@ -17,8 +17,7 @@ export async function POST(request: Request) {
       {
         cookies: {
           get(name: string) {
-            const cookie = cookieStore.get(name);
-            return cookie?.value;
+            return cookieStore.get(name)?.value;
           },
         },
       },
@@ -73,13 +72,27 @@ export async function POST(request: Request) {
         ],
         // pago con el pedido
         external_reference: pedido.id,
+        back_urls: {
+          success: "http://localhost:3000/pago-exitoso",
+          failure: "http://localhost:3000/pago-error",
+          pending: "http://localhost:3000/pago-pendiente",
+        },
+
+        auto_return: "approved",
       },
     } as never);
 
-    return Response.json({ id: response.id });
+    return Response.json({ 
+      id: response.id,
+      init_point: response.init_point,
+    });
+
   } catch (error) {
     console.error("ERROR MP:", error);
 
-    return Response.json({ error: "Error creando pago" }, { status: 500 });
+    return Response.json(
+      { error: "Error creando pago" },
+      { status: 500 }
+    );
   }
 }
