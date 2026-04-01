@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
 import { MercadoPagoConfig, Payment } from "mercadopago";
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
 });
+
+// Cliente seguro de Supabase (backend)
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function POST(req: Request) {
   try {
@@ -15,15 +21,21 @@ export async function POST(req: Request) {
     if (body.type === "payment") {
       const paymentId = body.data.id;
 
-      //Consultar pago en Mercado Pago
+      // Consultar pago en MercadoPago
       const payment = new Payment(client);
       const paymentData = await payment.get({ id: paymentId });
 
       console.log("PAGO COMPLETO:", paymentData);
 
+      const status = paymentData.status; // ✅ AHORA SÍ EXISTE
       const pedidoId = paymentData.external_reference;
 
-      //Actualizar pedido en Supabase
+      if (!pedidoId) {
+        console.log("No hay external_reference");
+        return NextResponse.json({ ok: true });
+      }
+
+      // ✅ Si el pago fue aprobado
       if (status === "approved") {
         await supabase
           .from("pedidos")
@@ -34,11 +46,10 @@ export async function POST(req: Request) {
       } else {
         console.log("Pago no aprobado:", status);
       }
-
-      console.log("Pedido actualizado:", pedidoId);
     }
 
     return NextResponse.json({ received: true });
+
   } catch (error) {
     console.error("Error en webhook:", error);
     return NextResponse.json({ error: "Error" }, { status: 500 });
