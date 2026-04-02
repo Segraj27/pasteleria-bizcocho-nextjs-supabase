@@ -68,6 +68,9 @@ export async function POST(request: Request) {
     const preference = new Preference(client);
 
     const response = await preference.create({
+      metadata: {
+        user_id: user.id,
+      },
       body: {
         items: [
           {
