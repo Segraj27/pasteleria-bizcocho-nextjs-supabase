@@ -22,36 +22,36 @@ export default function PedidosPage() {
 
   //  FUNCIÓN DE PAGO (MERCADO PAGO)
   const pagar = async () => {
-  try {
-    const res = await fetch("/api/mercadopago", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: "Pastel de chocolate",
-        price: 20000,
-        quantity: 1,
-      }),
-    });
+    try {
+      const res = await fetch("/api/mercadopago", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: "Pastel de chocolate",
+          price: 20000,
+          quantity: 1,
+        }),
+      });
 
-    if (!res.ok) {
-      throw new Error("Error al crear el pago");
+      if (!res.ok) {
+        throw new Error("Error al crear el pago");
+      }
+
+      const data = await res.json();
+      console.log("DATA FRONT:", data);
+
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        throw new Error("No llegó init_point");
+      }
+    } catch (error) {
+      console.error("Error en pago:", error);
+      alert("Error al procesar el pago");
     }
-
-    const data = await res.json();
-
-    if (data.init_point) {
-      window.location.href = data.init_point;
-    } else {
-      throw new Error("No llegó init_point");
-    }
-
-  } catch (error) {
-    console.error("Error en pago:", error);
-    alert("Error al procesar el pago");
-  }
-};
+  };
 
   useEffect(() => {
     const initPage = async () => {

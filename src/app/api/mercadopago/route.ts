@@ -72,15 +72,13 @@ export async function POST(request: Request) {
       body: {
         items: [
           {
-            title: title,
-            quantity: quantity,
+            title,
+            quantity,
             unit_price: price,
             currency_id: "COP",
           },
         ],
-
         external_reference: pedido.id,
-
         back_urls: {
           success:
             "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-exitoso",
@@ -89,13 +87,11 @@ export async function POST(request: Request) {
           pending:
             "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-pendiente",
         },
-
-        notification_url:
-          "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/api/webhook",
-
         auto_return: "approved",
       },
     } as never);
+
+    console.log("PREFERENCE RESPONSE:", response);
 
     return Response.json({
       id: response.id,
