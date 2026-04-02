@@ -36,8 +36,16 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     const title = String(body.title);
-    const price = Number(body.price);
-    const quantity = Number(body.quantity);
+    const price = Number(body.price || 0);
+    const quantity = Number(body.quantity || 1);
+
+    if (!price || price <= 0) {
+      return Response.json({ error: "Precio inválido" }, { status: 400 });
+    }
+
+    console.log("BODY:", body);
+    console.log("PRICE:", price);
+    console.log("QUANTITY:", quantity);
 
     // Crear pedido en la BD
     const { data: pedido, error } = await supabase
@@ -64,14 +72,15 @@ export async function POST(request: Request) {
       body: {
         items: [
           {
-            title,
-            quantity,
+            title: title,
+            quantity: quantity,
             unit_price: price,
             currency_id: "COP",
           },
         ],
-        // pago con el pedido
+
         external_reference: pedido.id,
+
         back_urls: {
           success:
             "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-exitoso",
@@ -80,6 +89,9 @@ export async function POST(request: Request) {
           pending:
             "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-pendiente",
         },
+
+        notification_url:
+          "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/api/webhook",
 
         auto_return: "approved",
       },
