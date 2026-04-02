@@ -53,7 +53,6 @@ export async function POST(request: Request) {
       .insert([
         {
           user_id: user.id,
-          cantidad: quantity,
           estado: "pendiente",
         },
       ])
