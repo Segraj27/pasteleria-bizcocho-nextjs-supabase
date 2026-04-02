@@ -74,11 +74,11 @@ export async function POST(request: Request) {
         external_reference: pedido.id,
         back_urls: {
           success:
-            "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/checkout/success",
+            "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-exitoso",
           failure:
-            "https://pasteleria-bizcocho-nextjs-supabase.vercel.app//checkout/failure",
+            "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-error",
           pending:
-            "https://pasteleria-bizcocho-nextjs-supabase.vercel.app//checkout/pending",
+            "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-pendiente",
         },
 
         auto_return: "approved",
