@@ -37,7 +37,11 @@ export default function PedidosPage() {
 
     const data = await res.json();
 
-    window.location.href = `https://www.mercadopago.com.co/checkout/v1/redirect?pref_id=${data.id}`;
+    if (data.init_point) {
+  window.location.href = data.init_point;
+} else {
+  console.error("No llegó init_point");
+}
   };
 
   useEffect(() => {

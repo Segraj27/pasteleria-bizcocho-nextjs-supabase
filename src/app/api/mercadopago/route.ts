@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       },
     );
 
-    //  Usuario autenticado
+    // Obtener usuario autenticado
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -31,18 +31,14 @@ export async function POST(request: Request) {
       return Response.json({ error: "No autenticado" }, { status: 401 });
     }
 
-    // Datos del frontend
+    // Obtener datos del frontend
     const body = await request.json();
 
     const title = String(body.title);
-    const price = Number(body.price || 0);
-    const quantity = Number(body.quantity || 1);
+    const price = Number(body.price);
+    const quantity = Number(body.quantity);
 
-    if (!price || price <= 0) {
-      return Response.json({ error: "Precio inválido" }, { status: 400 });
-    }
-
-    // Crear pedido en Supabase
+    // Crear pedido en la BD
     const { data: pedido, error } = await supabase
       .from("pedidos")
       .insert([
@@ -54,52 +50,47 @@ export async function POST(request: Request) {
       .select()
       .single();
 
-    if (error || !pedido) {
+    if (error) {
       console.error("Error creando pedido:", error);
       return Response.json({ error: "Error creando pedido" }, { status: 500 });
     }
 
-    // Crear preferencia
+    // Crear preferencia de pago
     const preference = new Preference(client);
 
     const response = await preference.create({
       body: {
         items: [
           {
-            id: "producto-1", //
-            title: String(title),
-            quantity: Number(quantity),
-            unit_price: Number(price),
+            title,
+            quantity,
+            unit_price: price,
             currency_id: "COP",
           },
         ],
-        external_reference: String(pedido.id),
-        metadata: {
-          user_id: user.id,
-        },
+        // pago con el pedido
+        external_reference: pedido.id,
         back_urls: {
-          success:
-            "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-exitoso",
-          failure:
-            "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-error",
-          pending:
-            "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-pendiente",
+          success: "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/checkout/success",
+          failure: "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/checkout/failure",
+          pending: "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/checkout/pending",
         },
+
         auto_return: "approved",
-        notification_url:
-          "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/api/webhook",
       },
-    });
+    } as never);
 
-    console.log("PREFERENCE RESPONSE:", response);
-
-    return Response.json({
+    return Response.json({ 
       id: response.id,
       init_point: response.init_point,
     });
+
   } catch (error) {
     console.error("ERROR MP:", error);
 
-    return Response.json({ error: "Error creando pago" }, { status: 500 });
+    return Response.json(
+      { error: "Error creando pago" },
+      { status: 500 }
+    );
   }
 }
