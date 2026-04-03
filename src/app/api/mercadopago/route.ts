@@ -8,7 +8,6 @@ const client = new MercadoPagoConfig({
 
 export async function POST(request: Request) {
   try {
-    // Crear cliente de Supabase con sesión
     const cookieStore = await cookies();
 
     const supabase = createServerClient(
@@ -23,7 +22,7 @@ export async function POST(request: Request) {
       },
     );
 
-    // Obtener usuario autenticado
+    //  Usuario autenticado
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -32,7 +31,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "No autenticado" }, { status: 401 });
     }
 
-    // Obtener datos del frontend
+    // Datos del frontend
     const body = await request.json();
 
     const title = String(body.title);
@@ -43,11 +42,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "Precio inválido" }, { status: 400 });
     }
 
-    console.log("BODY:", body);
-    console.log("PRICE:", price);
-    console.log("QUANTITY:", quantity);
-
-    // Crear pedido en la BD
+    // Crear pedido en Supabase
     const { data: pedido, error } = await supabase
       .from("pedidos")
       .insert([
@@ -59,28 +54,29 @@ export async function POST(request: Request) {
       .select()
       .single();
 
-    if (error) {
+    if (error || !pedido) {
       console.error("Error creando pedido:", error);
       return Response.json({ error: "Error creando pedido" }, { status: 500 });
     }
 
-    // Crear preferencia de pago
+    // Crear preferencia
     const preference = new Preference(client);
 
     const response = await preference.create({
-      metadata: {
-        user_id: user.id,
-      },
       body: {
         items: [
           {
-            title,
-            quantity,
-            unit_price: price,
+            id: "producto-1", //
+            title: String(title),
+            quantity: Number(quantity),
+            unit_price: Number(price),
             currency_id: "COP",
           },
         ],
-        external_reference: pedido.id,
+        external_reference: String(pedido.id),
+        metadata: {
+          user_id: user.id,
+        },
         back_urls: {
           success:
             "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-exitoso",
@@ -90,8 +86,10 @@ export async function POST(request: Request) {
             "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/pago-pendiente",
         },
         auto_return: "approved",
+        notification_url:
+          "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/api/webhook",
       },
-    } as never);
+    });
 
     console.log("PREFERENCE RESPONSE:", response);
 
