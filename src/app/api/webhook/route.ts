@@ -23,9 +23,11 @@ export async function POST(req: Request) {
     console.log("WEBHOOK:", body);
     console.log("HEADERS:", req.headers);
 
-    if (body.type === "payment" && body.data?.id) {
+    const paymentId = body.data?.id || body.resource;
+
+    if (paymentId) {
       const payment = new Payment(client);
-      const paymentData = await payment.get({ id: body.data.id });
+      const paymentData = await payment.get({ id: paymentId });
 
       const status = paymentData.status;
       const pedidoId = paymentData.external_reference;
