@@ -13,8 +13,15 @@ const supabase = createClient(
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    let body;
+
+    try {
+      body = await req.json();
+    } catch {
+      body = {};
+    }
     console.log("WEBHOOK:", body);
+    console.log("HEADERS:", req.headers);
 
     if (body.type === "payment" && body.data?.id) {
       const payment = new Payment(client);
