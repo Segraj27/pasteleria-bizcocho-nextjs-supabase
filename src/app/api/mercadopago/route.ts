@@ -69,6 +69,8 @@ export async function POST(request: Request) {
           },
         ],
         external_reference: pedido.id,
+        notification_url:
+          "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/api/webhook",
         back_urls: {
           success:
             "https://pasteleria-bizcocho-nextjs-supabase.vercel.app/checkout/success",
