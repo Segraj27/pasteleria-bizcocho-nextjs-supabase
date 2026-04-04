@@ -40,7 +40,6 @@ export default function PedidosPage() {
       }
 
       const data = await res.json();
-      console.log("DATA FRONT:", data);
 
       if (data.init_point) {
         window.location.href = data.init_point;
@@ -57,47 +56,35 @@ export default function PedidosPage() {
     const initPage = async () => {
       setLoading(true);
 
-      // Validar usuario
+      // VALIDAR USUARIO
       const {
         data: { user },
-        error,
       } = await supabase.auth.getUser();
 
-      if (error) {
-        console.error(error);
-        setLoading(false);
-        return;
-      }
-
+      // SI NO HAY USUARIO → REDIRECCIÓN
       if (!user) {
-        setLoading(false);
         router.replace("/login");
         return;
       }
 
       setUser(user);
 
-      // Llamar API
+      //  OBTENER PEDIDOS
       const res = await fetch("/api/admin/pedidos", {
-        method: "GET",
         credentials: "include",
       });
 
       const data = await res.json();
-
-      console.log("PEDIDOS API:", data);
-
       setPedidos(data);
+
       setLoading(false);
     };
 
     initPage();
-  }, []);
+  }, [router]);
 
-  //  FUNCIÓN CORRECTA
+  // CAMBIAR ESTADO
   const cambiarEstado = async (id: string, estado: string) => {
-    console.log("CAMBIANDO:", id, estado);
-
     await fetch(`/api/admin/pedidos/${id}`, {
       method: "PATCH",
       headers: {
@@ -115,9 +102,13 @@ export default function PedidosPage() {
     setPedidos(data);
   };
 
+  // LOADING
   if (loading) {
     return <p className="text-center mt-5">Cargando pedidos...</p>;
   }
+
+  //  PROTECCIÓN EXTRA (por si acaso)
+  if (!user) return null;
 
   return (
     <div className="container mt-5">
