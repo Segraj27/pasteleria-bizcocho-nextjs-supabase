@@ -10,7 +10,7 @@ export default function SuccessPage() {
         textAlign: "center",
       }}
     >
-      <h1>✅ Pago Pendiente</h1>
+      <h1> ❌ Pago Pendiente</h1>
       <p>Tu pago está en proceso de validación. Esto puede tardar unos minutos. </p>
 
       <a href="/pedidos">

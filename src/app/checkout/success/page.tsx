@@ -11,7 +11,7 @@ export default function SuccessPage() {
       }}
     >
       <h1>✅ Pago exitoso</h1>
-      <p>Gracias por tu compra </p>
+      <p>Tu pago fue procesado correctamente. Estamos confirmando tu pedido. </p>
 
       <a href="/pedidos">
         <button
@@ -25,7 +25,7 @@ export default function SuccessPage() {
             cursor: "pointer",
           }}
         >
-          Ver pedidos
+          Volver a pedidos
         </button>
       </a>
     </div>

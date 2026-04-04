@@ -25,7 +25,7 @@ export default function SuccessPage() {
             cursor: "pointer",
           }}
         >
-          Volver a pedidos
+          Intentar de nuevo
         </button>
       </a>
     </div>

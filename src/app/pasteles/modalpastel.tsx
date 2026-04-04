@@ -6,9 +6,10 @@ import {
 
 import { useState } from "react";
 
-export default function Modalpastel() {
+export default function Modalpastel({ pastel, pagar }: any) {
   const [size, setSize] = useState<Size>("Pequeño");
   const [occasion, setOccasion] = useState<Occasion>("Otro");
+  const [cantidad, setCantidad] = useState(1);
 
   return (
     <div className="modal fade" id="exampleModal" tabIndex={-1}>
@@ -23,7 +24,8 @@ export default function Modalpastel() {
           <div className="modal-body p-0">
             <div className="container-fluid">
               <div className="row">
-                {/* COLUMNA IZQUIERDA: Configuración (Blanca) */}
+
+                {/* COLUMNA IZQUIERDA */}
                 <div className="col-12 col-lg-8 p-4 p-lg-5 ">
                   <div className="d-flex justify-content-between align-items-center mb-4">
                     <h4
@@ -35,7 +37,7 @@ export default function Modalpastel() {
                     >
                       Personaliza tu pastel
                     </h4>
-                    {/* Botón de cerrar personalizado */}
+
                     <button
                       type="button"
                       className="btn-close d-md-none"
@@ -43,36 +45,46 @@ export default function Modalpastel() {
                     ></button>
                   </div>
 
-                  {/* 1. SECCIÓN OCASIÓN */}
+                  {/* OCASIÓN */}
                   <section className="mb-5">
                     <h6 className="fw-bold mb-3">🎉 1. ¿Cuál es la ocasión?</h6>
                     <OccasionSelector value={occasion} onChange={setOccasion} />
                   </section>
 
-                  {/* 2. SECCIÓN TAMAÑO */}
+                  {/* TAMAÑO */}
                   <section className="mb-5">
                     <h6 className="fw-bold ">👥 2. Selecciona el tamaño</h6>
                     <SizeSelector value={size} onChange={setSize} />
                   </section>
 
-                  {/* 3. SECCIÓN SABOR */}
+                  {/* CANTIDAD */}
+                  <section className="mb-5">
+                    <h6 className="fw-bold mb-3">🔢 3. Cantidad</h6>
+
+                    <input
+                      type="number"
+                      min="1"
+                      value={cantidad}
+                      onChange={(e) => setCantidad(Number(e.target.value))}
+                      className="form-control"
+                      style={{ maxWidth: "120px" }}
+                    />
+                  </section>
+
+                  {/* SABOR */}
                   <section>
                     <h6 className="fw-bold mb-3">
-                      🍰 3. Elige el sabor de la masa
+                      🍰 4. Elige el sabor de la masa
                     </h6>
-                    {/* Tu componente de sabores */}
                   </section>
                 </div>
 
-                {/*--------------------------------------------------------------------------------------------------------------------------------------- */}
-
-                {/* COLUMNA DERECHA: Resumen (Fondo Rosado/Crema) */}
-                {/* Resumen del Pedido de Pasteles */}
+                {/* COLUMNA DERECHA */}
                 <div
                   className="col-12 col-lg-4 p-4 d-flex flex-column shadow-sm"
                   style={{ backgroundColor: "#FFF5F7", minHeight: "100%" }}
                 >
-                  {/* Vista Previa */}
+                  {/* Vista previa */}
                   <div className="bg-white rounded-4 p-3 mb-4 shadow-sm text-center">
                     <span
                       className="badge rounded-pill mb-2"
@@ -80,54 +92,70 @@ export default function Modalpastel() {
                     >
                       Vista Previa
                     </span>
+
                     <div className="py-4">
-                      {/* Aquí va la imagen del pastel */}
                       <span style={{ fontSize: "80px" }}>🎂</span>
                     </div>
                   </div>
 
-                  {/* Resumen de pedido */}
+                  {/* Resumen */}
                   <div className="bg-white rounded-4 p-4 shadow-sm flex-grow-1">
                     <h6 className="fw-bold mb-4">📋 Resumen de tu pedido</h6>
 
-                    {/* Fila de Ocasión */}
-                    <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
+                    {pastel && (
+                      <div className="d-flex justify-content-between border-bottom pb-2">
+                        <span className="text-muted small">Pastel</span>
+                        <span className="fw-bold">{pastel.nombre}</span>
+                      </div>
+                    )}
+
+                    <div className="d-flex justify-content-between border-bottom pb-2">
                       <span className="text-muted small">Ocasión</span>
-                      <span
-                        className="fw-bold text-end"
-                        style={{ color: "#340101" }}
-                      >
-                        {occasion}
-                      </span>
+                      <span className="fw-bold">{occasion}</span>
                     </div>
 
-                    {/* Fila de Tamaño */}
-                    <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
+                    <div className="d-flex justify-content-between border-bottom pb-2">
                       <span className="text-muted small">Tamaño</span>
-                      <span
-                        className="fw-bold text-end"
-                        style={{ color: "#340101" }}
-                      >
-                        {size}
-                      </span>
+                      <span className="fw-bold">{size}</span>
                     </div>
-                    {/* aquí se añade más filas de resumen de lógica */}
+
+                    <div className="d-flex justify-content-between border-bottom pb-2">
+                      <span className="text-muted small">Cantidad</span>
+                      <span className="fw-bold">{cantidad}</span>
+                    </div>
 
                     <div className="mt-5 pt-3 border-top text-center">
                       <p className="text-muted mb-0 small">Precio Estimado</p>
+
                       <h2 className="fw-bold" style={{ color: "#D81B60" }}>
-                        $350 <small className="h6">COP</small>
+                        ${pastel ? pastel.precio * cantidad : 0}{" "}
+                        <small className="h6">COP</small>
                       </h2>
                     </div>
                   </div>
 
-                  {/* Botón de Acción Principal */}
-                  <button
-                    className="btn w-100 mt-4 py-3 rounded-pill fw-bold shadow-sm"
-                    style={{ backgroundColor: "#D81B60", color: "white" }}
-                  >
-                    Completa tu diseño
-                  </button>
+                  {/* BOTÓN PAGAR */}
+                <button
+  type="button"
+  onClick={(e) => {
+    e.preventDefault();
+    console.log("CLICK FUNCIONA");
+
+    if (!pastel) {
+      alert("Selecciona un pastel primero");
+      return;
+    }
+
+    pagar({
+      ...pastel,
+      cantidad,
+    });
+  }}
+  className="btn w-100 mt-4 py-3 rounded-pill fw-bold shadow-sm"
+  style={{ backgroundColor: "#D81B60", color: "white" }}
+>
+  Completa tu diseño
+</button>
 
                   <button
                     type="button"
@@ -137,6 +165,7 @@ export default function Modalpastel() {
                     Cancelar
                   </button>
                 </div>
+
               </div>
             </div>
           </div>
