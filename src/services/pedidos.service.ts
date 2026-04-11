@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from "@/lib/supabaseServer";
+import { createClient } from "@supabase/supabase-js";
 
 type PedidoInput = {
   pastel_id: string;
@@ -6,18 +6,32 @@ type PedidoInput = {
   mensaje_personalizado?: string;
 };
 
-export async function createPedido(data: PedidoInput) {
-  const supabase = await createSupabaseServerClient();
+function getSupabaseWithAuth(token: string) {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    },
+  );
+}
+
+// CREAR PEDIDO
+export async function createPedido(data: PedidoInput, token: string) {
+  const supabase = getSupabaseWithAuth(token);
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     throw new Error("Usuario no autenticado");
   }
-
-  const user = session.user;
 
   const { data: result, error } = await supabase
     .from("pedidos")
@@ -37,18 +51,18 @@ export async function createPedido(data: PedidoInput) {
   return result;
 }
 
-export async function getPedidosByUser() {
-  const supabase = await createSupabaseServerClient();
+// OBTENER PEDIDOS
+export async function getPedidosByUser(token: string) {
+  const supabase = getSupabaseWithAuth(token);
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     throw new Error("Usuario no autenticado");
   }
-
-  const user = session.user;
 
   const { data, error } = await supabase
     .from("pedidos")
@@ -61,18 +75,20 @@ export async function getPedidosByUser() {
   return data;
 }
 
-export async function deletePedidoById(id: string) {
-  const supabase = await createSupabaseServerClient();
+// ELIMINAR PEDIDO
+export async function deletePedidoById(id: string, token: string) {
+  const supabase = getSupabaseWithAuth(token);
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+  console.log("USER:", user);
+  console.log("USER ERROR:", userError);
 
-  if (!session) {
+  if (!user) {
     throw new Error("Usuario no autenticado");
   }
-
-  const user = session.user;
 
   const { error } = await supabase
     .from("pedidos")

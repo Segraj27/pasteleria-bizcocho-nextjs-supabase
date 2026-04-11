@@ -126,47 +126,48 @@ export default function PedidosPage() {
         </thead>
 
         <tbody>
-          {pedidos.map((pedido) => (
-            <tr key={pedido.id}>
-              <td>{pedido.id.slice(0, 8)}</td>
+          {Array.isArray(pedidos) &&
+            pedidos.map((pedido) => (
+              <tr key={pedido.id}>
+                <td>{pedido.id.slice(0, 8)}</td>
 
-              <td>{pedido.cantidad}</td>
+                <td>{pedido.cantidad}</td>
 
-              <td>
-                <span
-                  className={`badge ${
-                    pedido.estado === "pendiente"
-                      ? "bg-warning"
-                      : pedido.estado === "entregado"
-                        ? "bg-success"
-                        : "bg-danger"
-                  }`}
-                >
-                  {pedido.estado}
-                </span>
-              </td>
-
-              <td>{new Date(pedido.created_at).toLocaleDateString()}</td>
-
-              <td>
-                <div className="d-flex gap-2">
-                  <button
-                    className="btn btn-success btn-sm"
-                    onClick={() => cambiarEstado(pedido.id, "entregado")}
+                <td>
+                  <span
+                    className={`badge ${
+                      pedido.estado === "pendiente"
+                        ? "bg-warning"
+                        : pedido.estado === "entregado"
+                          ? "bg-success"
+                          : "bg-danger"
+                    }`}
                   >
-                    Entregar
-                  </button>
+                    {pedido.estado}
+                  </span>
+                </td>
 
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => cambiarEstado(pedido.id, "cancelado")}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
+                <td>{new Date(pedido.created_at).toLocaleDateString()}</td>
+
+                <td>
+                  <div className="d-flex gap-2">
+                    <button
+                      className="btn btn-success btn-sm"
+                      onClick={() => cambiarEstado(pedido.id, "entregado")}
+                    >
+                      Entregar
+                    </button>
+
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => cambiarEstado(pedido.id, "cancelado")}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
 

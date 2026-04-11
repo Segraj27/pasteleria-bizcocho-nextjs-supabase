@@ -35,8 +35,6 @@ export default function RootLayout({
 
         <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-ENjdO4Dr2bkBIFxQpeoY9F0ZrFj7l6tZT1zYx04ecqC7F8z5P5Vx1p5d1KkN0y"
-          crossOrigin="anonymous"
           strategy="afterInteractive"
         />
       </body>

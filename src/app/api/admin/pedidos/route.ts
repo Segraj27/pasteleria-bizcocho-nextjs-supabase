@@ -3,6 +3,15 @@ import { createPedido, getPedidosByUser } from "@/services/pedidos.service";
 
 export async function POST(request: Request) {
   try {
+    const authHeader = request.headers.get("authorization");
+    console.log("AUTH HEADER:", authHeader);
+
+    if (!authHeader) {
+      return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+
     const body = await request.json();
 
     const { pastel_id, cantidad, mensaje_personalizado } = body;
@@ -15,11 +24,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const pedido = await createPedido({
-      pastel_id,
-      cantidad,
-      mensaje_personalizado,
-    });
+    const pedido = await createPedido(
+      {
+        pastel_id,
+        cantidad,
+        mensaje_personalizado,
+      },
+      token,
+    );
 
     return NextResponse.json(pedido, { status: 201 });
   } catch (error) {
@@ -30,9 +42,17 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const pedidos = await getPedidosByUser();
+    const authHeader = request.headers.get("authorization");
+
+    if (!authHeader) {
+      return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+
+    const pedidos = await getPedidosByUser(token);
 
     return NextResponse.json(pedidos, { status: 200 });
   } catch (error) {
