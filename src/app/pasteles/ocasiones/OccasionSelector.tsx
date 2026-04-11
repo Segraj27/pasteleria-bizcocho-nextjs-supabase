@@ -12,11 +12,8 @@ interface Props {
 const occasions: { name: Occasion; icon: React.ElementType }[] = [
   { name: 'Cumpleaños', icon: PartyPopper },
   { name: 'Boda', icon: Heart },
-  { name: 'Aniversario', icon: Gift },
-  { name: 'Baby Shower', icon: Baby },
   { name: 'Graduación', icon: GraduationCap },
   { name: 'XV Años', icon: Crown },
-  { name: 'Día de la Madre', icon: Flower2 },
   { name: 'Otro', icon: Sparkles },
 ];
 

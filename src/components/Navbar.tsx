@@ -49,7 +49,6 @@ export default function Navbar() {
     router.push("/");
   };
 
-
 const [isOpen, setIsOpen] = useState(false);
 
 const toggleMenu = () => setIsOpen(!isOpen);
