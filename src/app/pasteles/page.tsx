@@ -99,7 +99,7 @@ export default function Page() {
               fontSize: "1.1rem",
             }}
           >
-            Elige tu favorito o personalízalo para cada ocasión a tu medida.
+            Elige tu favorito o personalízalo para cada ocasión a tu medida selecciona el que mas te gusta.
           </p>
 
           {/* GRID DE PASTELES */}

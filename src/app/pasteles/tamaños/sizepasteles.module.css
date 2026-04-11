@@ -25,6 +25,21 @@
   }
 }
 
+/* TABLET: 2 columnas (min-width: 768px) */
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* PC / TV: 3 columnas (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
 .button {
   padding: 16px;
   border-radius: 12px;

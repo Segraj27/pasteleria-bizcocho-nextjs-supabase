@@ -9,7 +9,7 @@ const sizes: { name: Size; portions: string; desc: string }[] = [
   { name: 'Pequeño', portions: '10-15 personas', desc: 'Ideal para reuniones íntimas' },
   { name: 'Mediano', portions: '20-30 personas', desc: 'Perfecto para fiestas familiares' },
   { name: 'Grande', portions: '40-50 personas', desc: 'Para celebraciones grandes' },
-  { name: 'XL', portions: '60+ personas', desc: 'Eventos masivos y bodas' },
+ /* { name: 'XL', portions: '60+ personas', desc: 'Eventos masivos y bodas' },*/
 ];
 
 export type Size = "Pequeño" | "Mediano" | "Grande" | "XL";

@@ -71,12 +71,8 @@ export default function Modalpastel({ pastel, pagar }: any) {
                     />
                   </section>
 
-                  {/* SABOR */}
-                  <section>
-                    <h6 className="fw-bold mb-3">
-                      🍰 4. Elige el sabor de la masa
-                    </h6>
-                  </section>
+                 
+                  
                 </div>
 
                 {/* COLUMNA DERECHA */}
