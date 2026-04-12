@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
@@ -6,7 +7,7 @@ import Modalpastel from "@/app/pasteles/modalpastel";
 import styles from "@/app/pasteles/page.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "@/components/Footer";
-import { useRouter } from "next/navigation"; // 🔥 faltaba
+import { useRouter } from "next/navigation"; //
 
 const fontStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
@@ -29,36 +30,57 @@ export default function Page() {
   const router = useRouter(); // faltaba
 
   const [pasteles, setPasteles] = useState<any[]>([]);
-  const [pastelSeleccionado, setPastelSeleccionado] = useState<any>(null);
+  type Pastel = {
+    id?: string;
+    nombre?: string;
+    precio?: number;
+    descripcion?: string;
+    imagen_url?: string;
+  };
 
-  // 🔥 estos estados faltaban (los usas abajo)
+  const [pastelSeleccionado, setPastelSeleccionado] = useState<Pastel | null>(
+    null,
+  );
+
+  //
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{ id: string } | null>(null);
   const [pedidos, setPedidos] = useState<any[]>([]);
 
+  // FUNCIÓN DE PAGO
 
-  // ✅ FUNCIÓN DE PAGO 
-  
-  const pagar = async (data: any) => {
+  const pagar = async (data: {
+    nombre?: string;
+    precio: number;
+    cantidad: number;
+  }) => {
     try {
-      const { data: pedido, error } = await supabase
-      .from("pedidos")
-      .insert([
-        {
-          user_id: user.id,
-          mensaje_personalizado: data.nombre, // puedes cambiarlo si quieres
-          estado: "pendiente",
-        },
-      ])
-      .select()
-      .single();
+      // ✅ VALIDACIÓN PRIMERO
+      if (!user) {
+        alert("Debes iniciar sesión");
+        return;
+      }
 
-    if (error) {
-      throw new Error("Error creando pedido");
-    }
+      // LUEGO INSERT
+      const { data: pedido, error } = await supabase
+        .from("pedidos")
+        .insert([
+          {
+            user_id: user.id,
+            mensaje_personalizado: data.nombre,
+            estado: "pendiente",
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error("Error creando pedido");
+      }
+
       const res = await fetch("/api/mercadopago", {
         method: "POST",
-        credentials: "include", // 
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -73,14 +95,14 @@ export default function Page() {
         throw new Error("Error al crear el pago");
       }
 
-      const result = await res.json(); 
+      const result = await res.json();
 
       if (result.init_point) {
         window.location.href = result.init_point;
       } else {
         throw new Error("No llegó init_point");
       }
-    } catch (error) { 
+    } catch (error) {
       console.error("Error en pago:", error);
       alert("Error al procesar el pago");
     }
@@ -138,7 +160,9 @@ export default function Page() {
       >
         <style>{fontStyles}</style>
 
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+        <div
+          style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}
+        >
           <h1
             style={{
               textAlign: "center",
@@ -160,7 +184,8 @@ export default function Page() {
               fontSize: "1.1rem",
             }}
           >
-            Elige tu favorito o personalízalo para cada ocasión a tu medida selecciona el que mas te gusta.
+            Elige tu favorito o personalízalo para cada ocasión a tu medida
+            selecciona el que mas te gusta.
           </p>
 
           <div
@@ -246,7 +271,9 @@ export default function Page() {
           </div>
         </div>
 
-        <Modalpastel pastel={pastelSeleccionado} pagar={pagar} />
+        {pastelSeleccionado && (
+          <Modalpastel pastel={pastelSeleccionado} pagar={pagar} />
+        )}
       </div>
 
       <Footer />

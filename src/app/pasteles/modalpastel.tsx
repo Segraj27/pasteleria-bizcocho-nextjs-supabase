@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SizeSelector, Size } from "./tamaños/sizepasteles";
 import {
   OccasionSelector,
@@ -12,7 +13,16 @@ type Pastel = {
   nombre?: string;
 };
 
-export default function Modalpastel({ pastel }: { pastel: Pastel }) {
+type Props = {
+  pastel: any;
+  pagar: (data: {
+    nombre?: string;
+    precio: number;
+    cantidad: number;
+  }) => Promise<void>;
+};
+
+export default function Modalpastel({ pastel, pagar }: Props) {
   const [size, setSize] = useState<Size>("Pequeño");
   const [occasion, setOccasion] = useState<Occasion>("Otro");
   const [cantidad, setCantidad] = useState(1);
