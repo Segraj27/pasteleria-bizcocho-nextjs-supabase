@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import UserDropdown from "./userdropdown/userdropdown";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -70,23 +71,41 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = async () => {
+  // --- PASO 1: ACTUALIZACIÓN INSTANTÁNEA ---
+  // Cambiamos el estado local de inmediato para que el Navbar 
+  // muestre "Login / Registro" sin esperar al servidor.
+  setUser(null);
+  setRole(null);
+  if (isOpen) setIsOpen(false); // Cierra el menú móvil si está abierto
+
+  // --- PASO 2: PROCESO EN SEGUNDO PLANO ---
+  try {
+    // Ejecutamos el cierre de sesión en Supabase
     await supabase.auth.signOut();
+    
+    // Limpiamos la caché de Next.js y redirigimos
     router.push("/");
-  };
+    router.refresh(); 
+  } catch (error) {
+    console.error("Error al cerrar sesión en el servidor:", error);
+    // Si hubo un error crítico, forzamos recarga total para limpiar todo
+    window.location.href = "/";
+  }
+};
 
   return (
     <nav
       style={{
-        background:
-          "linear-gradient(to bottom, #4b2c20 0%, #562504 50%, #3c1508 100%)",
-        position:"relative",
+        background: "linear-gradient(to bottom, #4b2c20 0%, #562504 50%, #3c1508 100%)",
+        position: "relative",
+        zIndex: 1000, // capa de atras navbar chocolate
         border: "none"
       }}
-      className={`navbar navbar-expand-lg navbar-pasteleria ${scrolled ? "scrolled" : ""}`}
+      className={`navbar navbar-expand-lg navbar-dark py-2 ${scrolled ? "scrolled" : ""}`}
     >
       <div className="container">
-        {/* LOGO IZQUIERDA */}
-        <Link href="/" className="navbar-brand ">
+        {/* 1. LOGO IZQUIERDA */}
+        <Link href="/" className="navbar-brand fw-bold">
           🍰 Pastelería El Bizcocho
         </Link>
 
@@ -95,144 +114,47 @@ export default function Navbar() {
         </button>
 
         <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`}>
-          <ul className="navbar-nav align-items-lg-center gap-lg-2">
-            {/* BOTÓN PRINCIPAL */}
-            <li className="nav-item">
-              <Link
-                href="/pasteles"
-                className="btn btn-cta"
-                onClick={closeMenu}
-              >
-                <i className="bi bi-pencil-square"></i>
-                <span className="ms-1">Hacer pedido</span>
-              </Link>
-            </li>
 
-            {/* INICIO */}
-            <li className="nav-item">
-              <Link
-                href="/"
-                className={`nav-link text-white d-flex align-items-center gap-1 ${pathname === "/" ? "active" : ""
-                  }`}
-                onClick={closeMenu}
-              >
-                <i className="bi bi-house-door"></i>
-                Inicio
-              </Link>
-            </li>
 
-            {/* CARRITO */}
-            <li className="nav-item">
-              <Link
-                href="/carrito"
-                className={`nav-link text-white d-flex align-items-center gap-1 ${pathname === "/carrito" ? "active" : ""
-                  }`}
-                onClick={closeMenu}
-              >
-                <i className="bi bi-cart"></i>
-                Carrito
-              </Link>
-            </li>
-            
+          {/* 3. ACCIONES DERECHA (Iconos y CTA) */}
+          <div className="d-flex ms-auto align-items-center gap-3 mt-3 mt-lg-0">
 
-            {/* ADMIN */}
-            {role === "admin" && (
-              <li className="nav-item">
-                <Link
-                  href="/pedidos"
-                  className={`nav-link text-white d-flex align-items-center gap-1 ${pathname === "/pedidos" ? "active" : ""
-                    }`}
-                  onClick={closeMenu}
-                >
-                  <i className="bi bi-cake2"></i>
-                  Pedidos
-                </Link>
-              </li>
-            )}
-
-            {/* PASTELES */}
-            <li className="nav-item">
-              <Link
-                href="/pasteles"
-                className={`nav-link text-white d-flex align-items-center gap-1 ${pathname === "/pasteles" ? "active" : ""
-                  }`}
-                onClick={closeMenu}
-              >
-                <i className="bi bi-cake2"></i>
-                Pasteles
-              </Link>
-            </li>
-
-            {/* USUARIO */}
             {!user ? (
               <>
-                <li className="nav-item">
-                  <Link href="/login" className="nav-link" onClick={closeMenu}>
-                    Iniciar sesión
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    href="/register"
-                    className="nav-link"
-                    onClick={closeMenu}
-                  >
-                    Registrarse
-                  </Link>
-                </li>
+                {/* Si NO hay usuario, mostramos Login y Registrate */}
+                <Link href="/login" className="nav-link text-white small" onClick={closeMenu}>
+                  Login
+                </Link>
+
+                <Link href="/register" className="nav-link text-white small" onClick={closeMenu}>
+                  Registrate
+                </Link>
               </>
             ) : (
-              <>
-                <li className="nav-item">
-                  <span className="nav-link text-white fw-bold">
-                    👤 {user.user_metadata?.full_name || user.email}
-                  </span>
-                </li>
-                <li className="nav-item">
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      closeMenu();
-                    }}
-                    className="btn btn-sm btn-outline-light"
-                  >
-                    Cerrar sesión
-                  </button>
-                </li>
-              </>
+              /* Si HAY usuario, mostramos el Dropdown con su perfil */
+              <UserDropdown user={user} handleLogout={handleLogout} />
             )}
-          </ul>
+
+            {/* BOTÓN PRINCIPAL (Destacado) */}
+            <Link
+              href="/pasteles"
+              className="btn btn-cta px-4 rounded-pill fw-bold"
+              style={{ backgroundColor: '#ff8a65', color: 'white' }}
+              onClick={closeMenu}
+            >
+              Hacer pedido
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* 🍫 CHOCOLATE SUTIL (Corregido para evitar doble tono) forma del navbar derretido */}
-      <div
-        className="nav-drip"
-        style={{
-          position: 'absolute',
-          top: 'calc(100% - 1px)', // Se solapa 1px para borrar la línea divisoria
-          left: 0,
-          width: '100%',
-          height: '35px',        // <--- MUCHO MÁS PEQUEÑO: Se ve más elegante
-          overflow: 'hidden',
-          lineHeight: 0,
-          zIndex: 10,
-        }}
-      >
-        <svg
-          viewBox="0 0 1440 100" // Reducimos el alto del lienzo para que las gotas sean chatas
-          preserveAspectRatio="none"
-          style={{ width: '100%', height: '100%' }}
-        >
-          {/* Usamos el color de fondo más oscuro del nav para que la transición sea invisible */}
-          <path
-            fill="#3c1508"
-            d="M0,0 L1440,0 L1440,40 C1320,100 1200,100 1080,40 C960,-20 840,-20 720,40 C600,100 480,100 360,40 C240,-20 120,-20 0,40 Z"
-          ></path>
+      {/* CHOCOLATE DERRETIDO */}
+      <div className="nav-drip" style={{ position: 'absolute', top: '100%', left: 0, width: '100%', height: '35px', zIndex: -1, lineHeight: 0 }}>
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+          <path fill="#3c1508" d="M0,0 L1440,0 L1440,40 C1320,100 1200,100 1080,40 C960,-20 840,-20 720,40 C600,100 480,100 360,40 C240,-20 120,-20 0,40 Z"></path>
         </svg>
       </div>
-
-
     </nav>
   );
+
 }

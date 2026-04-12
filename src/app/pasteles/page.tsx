@@ -69,6 +69,7 @@ export default function Page() {
   useEffect(() => {
     async function cargar() {
       const data = await obtenerPasteles();
+     //  console.log("DATOS 👉", data); // 👈 DEBUG verificar que si trae el json de la db comentariado
       setPasteles(data);
     }
     cargar();
