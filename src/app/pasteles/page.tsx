@@ -6,6 +6,7 @@ import Modalpastel from "@/app/pasteles/modalpastel";
 import styles from "@/app/pasteles/page.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "@/components/Footer";
+import { useRouter } from "next/navigation"; // 🔥 faltaba
 
 const fontStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
@@ -25,33 +26,76 @@ async function obtenerPasteles() {
 }
 
 export default function Page() {
-  const [pasteles, setPasteles] = useState<any[]>([]);
+  const router = useRouter(); // 🔥 faltaba
 
-  // ✅ ESTADO DEL PASTEL SELECCIONADO
+  const [pasteles, setPasteles] = useState<any[]>([]);
   const [pastelSeleccionado, setPastelSeleccionado] = useState<any>(null);
 
-  // ✅ FUNCIÓN DE PAGO
+  // 🔥 estos estados faltaban (los usas abajo)
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [pedidos, setPedidos] = useState<any[]>([]);
+
+  // ✅ FUNCIÓN DE PAGO 
   const pagar = async (data: any) => {
-    const res = await fetch("/api/mercadopago", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: data.nombre,
-        price: data.precio,
-        quantity: data.cantidad,
-      }),
-    });
+    try {
+      const res = await fetch("/api/mercadopago", {
+        method: "POST",
+        credentials: "include", // 🔥 CLAVE para enviar sesión
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: data.nombre,
+          price: data.precio,
+          quantity: data.cantidad,
+        }),
+      });
 
-    const result = await res.json();
+      if (!res.ok) {
+        throw new Error("Error al crear el pago");
+      }
 
-    if (result.init_point) {
-      window.location.href = result.init_point;
-    } else {
-      console.error("Error en el pago");
+      const result = await res.json(); 
+
+      if (result.init_point) {
+        window.location.href = result.init_point;
+      } else {
+        throw new Error("No llegó init_point");
+      }
+    } catch (error) { 
+      console.error("Error en pago:", error);
+      alert("Error al procesar el pago");
     }
   };
+
+  useEffect(() => {
+    const initPage = async () => {
+      setLoading(true);
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        router.replace("/login");
+        return;
+      }
+
+      setUser(user);
+
+      const res = await fetch("/api/admin/pedidos", {
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      setPedidos(data);
+
+      setLoading(false);
+    };
+
+    initPage();
+  }, [router]);
 
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js" as any);
@@ -102,7 +146,6 @@ export default function Page() {
             Elige tu favorito o personalízalo para cada ocasión a tu medida selecciona el que mas te gusta.
           </p>
 
-          {/* GRID DE PASTELES */}
           <div
             style={{
               display: "grid",
@@ -113,7 +156,7 @@ export default function Page() {
             {pasteles.map((p) => (
               <div
                 key={p.id}
-                onClick={() => setPastelSeleccionado(p)} // 🔥 AQUÍ ESTABA EL ERROR
+                onClick={() => setPastelSeleccionado(p)}
                 className={styles.card}
                 style={{
                   padding: "20px",
@@ -163,14 +206,12 @@ export default function Page() {
             ))}
           </div>
 
-          {/* 🔥 CONFIRMACIÓN VISUAL */}
           {pastelSeleccionado && (
             <p style={{ marginTop: "20px", textAlign: "center" }}>
               Seleccionaste: <strong>{pastelSeleccionado.nombre}</strong>
             </p>
           )}
 
-          {/* BOTÓN QUE ABRE MODAL */}
           <div className="text-center mt-4">
             <button
               className="btn"
@@ -188,7 +229,6 @@ export default function Page() {
           </div>
         </div>
 
-        {/* ✅ PASAR EL PASTEL AL MODAL */}
         <Modalpastel pastel={pastelSeleccionado} pagar={pagar} />
       </div>
 

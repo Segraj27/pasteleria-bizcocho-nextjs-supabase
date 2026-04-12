@@ -47,7 +47,7 @@ export default function HomePage() {
               </p>
 
               <div className="hero-actions">
-                <a href="/pedidos" className="btn btn-cta btn-lg">
+                <a href="/pasteles" className="btn btn-cta btn-lg">
                   <i className="bi bi-cake2 me-2"></i>
                   Hacer mi pedido
                 </a>

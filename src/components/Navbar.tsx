@@ -82,7 +82,7 @@ const closeMenu = () => setIsOpen(false); // Útil para cerrar al hacer clic en 
         <ul className="navbar-nav ms-auto align-items-lg-center">
           
           <li className="nav-item ms-lg-3 mt-2 mt-lg-0 py-2"> {/* py-2 añade el padding vertical */}
-            <Link href="/pedidos" className="btn btn-cta" onClick={closeMenu}>
+            <Link href="/pasteles" className="btn btn-cta" onClick={closeMenu}>
               <i className="bi bi-pencil-square me-1"></i>
               Hacer pedido
             </Link>

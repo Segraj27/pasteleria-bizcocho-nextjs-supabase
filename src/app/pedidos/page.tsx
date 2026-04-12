@@ -20,38 +20,6 @@ export default function PedidosPage() {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
 
-  //  FUNCIÓN DE PAGO (MERCADO PAGO)
-  const pagar = async () => {
-    try {
-      const res = await fetch("/api/mercadopago", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: "Pastel de chocolate",
-          price: 20000,
-          quantity: 1,
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Error al crear el pago");
-      }
-
-      const data = await res.json();
-
-      if (data.init_point) {
-        window.location.href = data.init_point;
-      } else {
-        throw new Error("No llegó init_point");
-      }
-    } catch (error) {
-      console.error("Error en pago:", error);
-      alert("Error al procesar el pago");
-    }
-  };
-
   useEffect(() => {
     const initPage = async () => {
       setLoading(true);
@@ -107,7 +75,7 @@ export default function PedidosPage() {
     return <p className="text-center mt-5">Cargando pedidos...</p>;
   }
 
-  //  PROTECCIÓN EXTRA (por si acaso)
+  // PROTECCIÓN EXTRA
   if (!user) return null;
 
   return (
@@ -139,8 +107,8 @@ export default function PedidosPage() {
                       pedido.estado === "pendiente"
                         ? "bg-warning"
                         : pedido.estado === "entregado"
-                          ? "bg-success"
-                          : "bg-danger"
+                        ? "bg-success"
+                        : "bg-danger"
                     }`}
                   >
                     {pedido.estado}
@@ -170,13 +138,6 @@ export default function PedidosPage() {
             ))}
         </tbody>
       </table>
-
-      {/* BOTÓN DE PAGO */}
-      <div className="text-center mt-4">
-        <button onClick={pagar} className="btn btn-primary">
-          Pagar pedido
-        </button>
-      </div>
     </div>
   );
 }
