@@ -13,7 +13,7 @@ export default function SuccessPage() {
       <h1> ❌ Pago Pendiente</h1>
       <p>Tu pago está en proceso de validación. Esto puede tardar unos minutos. </p>
 
-      <a href="/pedidos">
+      <a href="/pasteles">
         <button
           style={{
             marginTop: "20px",

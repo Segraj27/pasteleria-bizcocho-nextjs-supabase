@@ -13,7 +13,7 @@ export default function SuccessPage() {
       <h1>✅ Pago exitoso</h1>
       <p>Tu pago fue procesado correctamente. Estamos confirmando tu pedido. </p>
 
-      <a href="/pedidos">
+      <a href="/pasteles">
         <button
           style={{
             marginTop: "20px",

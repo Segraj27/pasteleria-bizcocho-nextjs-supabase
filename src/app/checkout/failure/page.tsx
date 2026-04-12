@@ -13,7 +13,7 @@ export default function SuccessPage() {
       <h1>❌ Pago fallido</h1>
       <p>Hubo un problema con tu pago. Puedes intentarlo nuevamente. </p>
 
-      <a href="/pedidos">
+      <a href="/pasteles">
         <button
           style={{
             marginTop: "20px",
