@@ -10,11 +10,12 @@ import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 
 type Pastel = {
-  nombre?: string;
+  nombre: string;
+  precio?: number;
 };
 
 type Props = {
-  pastel: any;
+  pastel: Pastel;
   pagar: (data: {
     nombre?: string;
     precio: number;
