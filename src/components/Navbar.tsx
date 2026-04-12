@@ -76,15 +76,17 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`navbar navbar-expand-lg ${scrolled ? "scrolled" : ""}`}
       style={{
         background:
           "linear-gradient(to bottom, #4b2c20 0%, #562504 50%, #3c1508 100%)",
+        position:"relative",
+        border: "none"
       }}
+      className={`navbar navbar-expand-lg navbar-pasteleria ${scrolled ? "scrolled" : ""}`}
     >
       <div className="container">
         {/* LOGO IZQUIERDA */}
-        <Link href="/" className="navbar-brand me-auto fw-bold text-white">
+        <Link href="/" className="navbar-brand ">
           🍰 Pastelería El Bizcocho
         </Link>
 
@@ -110,9 +112,8 @@ export default function Navbar() {
             <li className="nav-item">
               <Link
                 href="/"
-                className={`nav-link text-white d-flex align-items-center gap-1 ${
-                  pathname === "/" ? "active" : ""
-                }`}
+                className={`nav-link text-white d-flex align-items-center gap-1 ${pathname === "/" ? "active" : ""
+                  }`}
                 onClick={closeMenu}
               >
                 <i className="bi bi-house-door"></i>
@@ -124,24 +125,23 @@ export default function Navbar() {
             <li className="nav-item">
               <Link
                 href="/carrito"
-                className={`nav-link text-white d-flex align-items-center gap-1 ${
-                  pathname === "/carrito" ? "active" : ""
-                }`}
+                className={`nav-link text-white d-flex align-items-center gap-1 ${pathname === "/carrito" ? "active" : ""
+                  }`}
                 onClick={closeMenu}
               >
                 <i className="bi bi-cart"></i>
                 Carrito
               </Link>
             </li>
+            
 
             {/* ADMIN */}
             {role === "admin" && (
               <li className="nav-item">
                 <Link
                   href="/pedidos"
-                  className={`nav-link text-white d-flex align-items-center gap-1 ${
-                    pathname === "/pedidos" ? "active" : ""
-                  }`}
+                  className={`nav-link text-white d-flex align-items-center gap-1 ${pathname === "/pedidos" ? "active" : ""
+                    }`}
                   onClick={closeMenu}
                 >
                   <i className="bi bi-cake2"></i>
@@ -154,9 +154,8 @@ export default function Navbar() {
             <li className="nav-item">
               <Link
                 href="/pasteles"
-                className={`nav-link text-white d-flex align-items-center gap-1 ${
-                  pathname === "/pasteles" ? "active" : ""
-                }`}
+                className={`nav-link text-white d-flex align-items-center gap-1 ${pathname === "/pasteles" ? "active" : ""
+                  }`}
                 onClick={closeMenu}
               >
                 <i className="bi bi-cake2"></i>
@@ -205,6 +204,35 @@ export default function Navbar() {
           </ul>
         </div>
       </div>
+
+      {/* 🍫 CHOCOLATE SUTIL (Corregido para evitar doble tono) forma del navbar derretido */}
+      <div
+        className="nav-drip"
+        style={{
+          position: 'absolute',
+          top: 'calc(100% - 1px)', // Se solapa 1px para borrar la línea divisoria
+          left: 0,
+          width: '100%',
+          height: '35px',        // <--- MUCHO MÁS PEQUEÑO: Se ve más elegante
+          overflow: 'hidden',
+          lineHeight: 0,
+          zIndex: 10,
+        }}
+      >
+        <svg
+          viewBox="0 0 1440 100" // Reducimos el alto del lienzo para que las gotas sean chatas
+          preserveAspectRatio="none"
+          style={{ width: '100%', height: '100%' }}
+        >
+          {/* Usamos el color de fondo más oscuro del nav para que la transición sea invisible */}
+          <path
+            fill="#3c1508"
+            d="M0,0 L1440,0 L1440,40 C1320,100 1200,100 1080,40 C960,-20 840,-20 720,40 C600,100 480,100 360,40 C240,-20 120,-20 0,40 Z"
+          ></path>
+        </svg>
+      </div>
+
+
     </nav>
   );
 }
