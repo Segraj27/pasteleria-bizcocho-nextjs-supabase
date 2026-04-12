@@ -8,6 +8,7 @@ import styles from "@/app/pasteles/page.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "@/components/Footer";
 import { useRouter } from "next/navigation"; //
+import { Pastel } from "@/types/pastel";
 
 const fontStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
@@ -23,20 +24,16 @@ async function obtenerPasteles() {
     console.error("Error no hay datos", error);
     return [];
   }
-  return data;
+  return data.map((p) => ({
+    ...p,
+    precio: p.precio ?? 0, // 👈 asegura que nunca sea undefined
+  }));
 }
 
 export default function Page() {
   const router = useRouter(); // faltaba
 
-  const [pasteles, setPasteles] = useState<any[]>([]);
-  type Pastel = {
-    id?: string;
-    nombre?: string;
-    precio?: number;
-    descripcion?: string;
-    imagen_url?: string;
-  };
+  const [pasteles, setPasteles] = useState<Pastel[]>([]);
 
   const [pastelSeleccionado, setPastelSeleccionado] = useState<Pastel | null>(
     null,

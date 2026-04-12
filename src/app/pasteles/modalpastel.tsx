@@ -8,11 +8,7 @@ import {
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
-
-type Pastel = {
-  nombre: string;
-  precio?: number;
-};
+import { Pastel } from "@/types/pastel";
 
 type Props = {
   pastel: Pastel;
