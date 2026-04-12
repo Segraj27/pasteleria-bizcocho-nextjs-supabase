@@ -69,7 +69,7 @@ export default function Page() {
   useEffect(() => {
     async function cargar() {
       const data = await obtenerPasteles();
-     //  console.log("DATOS 👉", data); // 👈 DEBUG verificar que si trae el json de la db comentariado
+      //  console.log("DATOS 👉", data); // 👈 DEBUG verificar que si trae el json de la db comentariado
       setPasteles(data);
     }
     cargar();
@@ -88,14 +88,21 @@ export default function Page() {
         <style>{fontStyles}</style>
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          
+
           {/* 🏷️ TÍTULO */}
-          <h1 style={{ textAlign: "center", fontSize: "3rem", color: "#3D2B1F" }}>
+          <h1 style={{
+            textAlign: "center",
+            fontFamily: "'Playfair Display', serif", // 👈 Aplicamos la fuente elegante, 
+            fontSize: "3rem",
+            color: "#3D2B1F"
+          }}>
             Nuestra Lista de Pasteles
           </h1>
 
-          <p style={{ textAlign: "center", color: "#70645C" }}>
-            Elige tu favorito o personalízalo
+          <p style={{
+            padding: "20px", color: "#70645C", fontFamily: "'Montserrat', sans-serif", // 👈 Fuente limpia para el subtítulo y elegancia
+          }}>
+            Elige tu favorito o personalízalo para cada ocasión a tu medida selecciona el que mas te gusta.
           </p>
 
           {/* 🍰 GRID DE PASTELES */}
@@ -111,13 +118,31 @@ export default function Page() {
                 key={p.id}
                 onClick={() => setPastelSeleccionado(p)} // 👉 selecciona pastel
                 className={styles.card}
+                style={{
+                  cursor: 'pointer',
+                  transition: 'transform 0.3s ease',
+                  borderRadius: '20px', // Bordes redondeados de la foto
+                  overflow: 'hidden',
+                  backgroundColor: '#fff',
+                  border: 'none',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
+                }}
               >
                 <img
                   src={p.imagen_url}
-                  style={{ width: "100%", height: "250px" }}
+                  style={{
+                    width: "100%",
+                    height: "280px",
+                    objectFit: "cover", // 👈 Importante para que no se deformen las fotos
+                    borderRadius: '20px 20px 0 0'
+                  }}
                 />
-                <h2>{p.nombre}</h2>
-                <p>{p.descripcion}</p>
+                <div style={{ padding: '20px' }}>
+                  <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', color: '#3D2B1F' }}>
+                    {p.nombre}
+                  </h2>
+                  <p style={{ color: '#70645C', fontSize: '0.9rem' }}>{p.descripcion}</p>
+                </div>
               </div>
             ))}
           </div>
