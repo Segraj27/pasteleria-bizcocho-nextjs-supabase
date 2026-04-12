@@ -71,34 +71,34 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = async () => {
-  // --- PASO 1: ACTUALIZACIÓN INSTANTÁNEA ---
-  // Cambiamos el estado local de inmediato para que el Navbar 
-  // muestre "Login / Registro" sin esperar al servidor.
-  setUser(null);
-  setRole(null);
-  if (isOpen) setIsOpen(false); // Cierra el menú móvil si está abierto
+    // --- PASO 1: ACTUALIZACIÓN INSTANTÁNEA ---
+    // Cambiamos el estado local de inmediato para que el Navbar 
+    // muestre "Login / Registro" sin esperar al servidor.
+    setUser(null);
+    setRole(null);
+    if (isOpen) setIsOpen(false); // Cierra el menú móvil si está abierto
 
-  // --- PASO 2: PROCESO EN SEGUNDO PLANO ---
-  try {
-    // Ejecutamos el cierre de sesión en Supabase
-    await supabase.auth.signOut();
-    
-    // Limpiamos la caché de Next.js y redirigimos
-    router.push("/");
-    router.refresh(); 
-  } catch (error) {
-    console.error("Error al cerrar sesión en el servidor:", error);
-    // Si hubo un error crítico, forzamos recarga total para limpiar todo
-    window.location.href = "/";
-  }
-};
+    // --- PASO 2: PROCESO EN SEGUNDO PLANO ---
+    try {
+      // Ejecutamos el cierre de sesión en Supabase
+      await supabase.auth.signOut();
+
+      // Limpiamos la caché de Next.js y redirigimos
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Error al cerrar sesión en el servidor:", error);
+      // Si hubo un error crítico, forzamos recarga total para limpiar todo
+      window.location.href = "/";
+    }
+  };
 
   return (
     <nav
       style={{
         background: "linear-gradient(to bottom, #4b2c20 0%, #562504 50%, #3c1508 100%)",
         position: "relative",
-        zIndex: 1000, // capa de atras navbar chocolate
+        zIndex: 100, // capa de atras navbar chocolate
         border: "none"
       }}
       className={`navbar navbar-expand-lg navbar-dark py-2 ${scrolled ? "scrolled" : ""}`}
@@ -115,9 +115,18 @@ export default function Navbar() {
 
         <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`}>
 
-
           {/* 3. ACCIONES DERECHA (Iconos y CTA) */}
           <div className="d-flex ms-auto align-items-center gap-3 mt-3 mt-lg-0">
+
+            {/* BOTÓN PRINCIPAL (Destacado) */}
+            <Link
+              href="/pasteles"
+              className="btn btn-cta px-4 rounded-pill fw-bold"
+              style={{ backgroundColor: '#ff8a65', color: 'white' }}
+              onClick={closeMenu}
+            >
+              Hacer pedido
+            </Link>
 
             {!user ? (
               <>
@@ -135,15 +144,7 @@ export default function Navbar() {
               <UserDropdown user={user} handleLogout={handleLogout} />
             )}
 
-            {/* BOTÓN PRINCIPAL (Destacado) */}
-            <Link
-              href="/pasteles"
-              className="btn btn-cta px-4 rounded-pill fw-bold"
-              style={{ backgroundColor: '#ff8a65', color: 'white' }}
-              onClick={closeMenu}
-            >
-              Hacer pedido
-            </Link>
+
           </div>
         </div>
       </div>

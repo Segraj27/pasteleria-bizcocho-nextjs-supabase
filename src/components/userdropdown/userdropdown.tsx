@@ -45,10 +45,13 @@ export default function UserDropdown({ user, handleLogout }: { user: User; handl
           backgroundColor: '#3c1508', 
           position: 'absolute', 
           right: 0, 
-          top: '100%',
+          top: '110%',
           zIndex: 9999, // Asegura que esté por encima de todo
-          minWidth: '200px',
-          display: isOpen ? 'block' : 'none'
+          minWidth: '220px',
+          display: isOpen ? 'block' : 'none',
+          padding: '12px 8px',
+          borderRadius:'12px',
+          overflow: 'visible',
         }}
       >
         <li className="px-3 py-2">
