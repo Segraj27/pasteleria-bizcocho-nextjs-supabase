@@ -5,6 +5,7 @@ import "@/styles/custom.css";
 import Navbar from "@/components/Navbar";
 import Script from "next/script";
 import { Playfair_Display, Poppins } from "next/font/google";
+import { CartProvider } from "@/context/CartContext";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -29,9 +30,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={poppins.className}>
-        <Navbar />
-
-        <main className="container">{children}</main>
+        <CartProvider>
+          <Navbar />
+          <main className="container">{children}</main>
+        </CartProvider>
 
         <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
