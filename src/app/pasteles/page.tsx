@@ -23,7 +23,10 @@ async function obtenerPasteles() {
     console.error("Error no hay datos", error);
     return [];
   }
-  return data;
+  return data.map((p) => ({
+    ...p,
+    precio: p.precio ?? 0, // 👈 asegura que nunca sea undefined
+  }));
 }
 
 export default function Page() {
