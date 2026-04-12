@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { User } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
 
 // Interface de pedidos
 interface Pedido {
@@ -21,28 +22,6 @@ export default function PedidosPage() {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [loading, setLoading] = useState(true);
 
-  //  FUNCIÓN DE PAGO (MERCADO PAGO)
-  const pagar = async () => {
-    const res = await fetch("/api/mercadopago", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: "Pastel de chocolate",
-        price: 20000,
-        quantity: 1,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (data.init_point) {
-  window.location.href = data.init_point;
-} else {
-  console.error("No llegó init_point");
-}
-  };
 
   useEffect(() => {
     const initPage = async () => {
@@ -61,9 +40,9 @@ export default function PedidosPage() {
       }
 
       if (!user) {
-        router.replace("/login");
-        return;
-      }
+  setIsChecking(false);
+  return;
+}
 
       setUser(user);
 
@@ -175,13 +154,6 @@ export default function PedidosPage() {
           ))}
         </tbody>
       </table>
-
-      {/* BOTÓN DE PAGO */}
-      <div className="text-center mt-4">
-        <button onClick={pagar} className="btn btn-primary">
-          Pagar pedido
-        </button>
-      </div>
     </div>
   );
 }

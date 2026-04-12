@@ -1,8 +1,5 @@
 import { SizeSelector, Size } from "./tamaños/sizepasteles";
-import {
-  OccasionSelector,
-  Occasion,
-} from "@/app/pasteles/ocasiones/OccasionSelector";
+import { OccasionSelector, Occasion } from "@/app/pasteles/ocasiones/OccasionSelector";
 
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
@@ -20,15 +17,14 @@ export default function Modalpastel({ pastel }: { pastel: Pastel }) {
   const { addToCart } = useCart();
   const router = useRouter();
 
-  //calcular precio dinámico
   const precioUnitario =
     size === "Pequeño"
       ? 30000
       : size === "Mediano"
-        ? 50000
-        : size === "Grande"
-          ? 80000
-          : 30000;
+      ? 50000
+      : size === "Grande"
+      ? 80000
+      : 30000;
 
   const total = precioUnitario * cantidad;
 
@@ -45,6 +41,7 @@ export default function Modalpastel({ pastel }: { pastel: Pastel }) {
           <div className="modal-body p-0">
             <div className="container-fluid">
               <div className="row">
+
                 {/* IZQUIERDA */}
                 <div className="col-12 col-lg-8 p-4 p-lg-5">
                   <h4 className="fw-bold mb-4">Personaliza tu pastel</h4>
@@ -92,7 +89,7 @@ export default function Modalpastel({ pastel }: { pastel: Pastel }) {
                     <h3 style={{ color: "#D81B60" }}>${total} COP</h3>
                   </div>
 
-                  {/* ✅ BOTÓN CORREGIDO */}
+                  {/* ✔ BOTÓN SIN MERCADO PAGO (SOLO CARRITO) */}
                   <button
                     type="button"
                     onClick={(e) => {
@@ -115,8 +112,6 @@ export default function Modalpastel({ pastel }: { pastel: Pastel }) {
                         },
                       });
 
-                      console.log("AGREGADO AL CARRITO");
-
                       router.push("/carrito");
                     }}
                     className="btn w-100 mt-4 py-3 rounded-pill fw-bold shadow-sm"
@@ -133,6 +128,7 @@ export default function Modalpastel({ pastel }: { pastel: Pastel }) {
                     Cancelar
                   </button>
                 </div>
+
               </div>
             </div>
           </div>

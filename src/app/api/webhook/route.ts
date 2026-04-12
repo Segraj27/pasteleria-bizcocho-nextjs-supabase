@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
 
-    console.log("🔥 WEBHOOK:", body);
+    console.log(" WEBHOOK:", body);
 
     const paymentId =
       body?.data?.id ||

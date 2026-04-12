@@ -6,7 +6,7 @@ import Modalpastel from "@/app/pasteles/modalpastel";
 import styles from "@/app/pasteles/page.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "@/components/Footer";
-import { useRouter } from "next/navigation"; // 🔥 faltaba
+import { useRouter } from "next/navigation";
 
 const fontStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
@@ -26,66 +26,16 @@ async function obtenerPasteles() {
 }
 
 export default function Page() {
-  const router = useRouter(); // faltaba
+  const router = useRouter();
 
   const [pasteles, setPasteles] = useState<any[]>([]);
   const [pastelSeleccionado, setPastelSeleccionado] = useState<any>(null);
 
-  // 🔥 estos estados faltaban (los usas abajo)
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [pedidos, setPedidos] = useState<any[]>([]);
 
-
-  // ✅ FUNCIÓN DE PAGO 
-  
-  const pagar = async (data: any) => {
-    try {
-      const { data: pedido, error } = await supabase
-      .from("pedidos")
-      .insert([
-        {
-          user_id: user.id,
-          mensaje_personalizado: data.nombre, // puedes cambiarlo si quieres
-          estado: "pendiente",
-        },
-      ])
-      .select()
-      .single();
-
-    if (error) {
-      throw new Error("Error creando pedido");
-    }
-      const res = await fetch("/api/mercadopago", {
-        method: "POST",
-        credentials: "include", // 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: data.nombre,
-          price: data.precio,
-          quantity: data.cantidad,
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Error al crear el pago");
-      }
-
-      const result = await res.json(); 
-
-      if (result.init_point) {
-        window.location.href = result.init_point;
-      } else {
-        throw new Error("No llegó init_point");
-      }
-    } catch (error) { 
-      console.error("Error en pago:", error);
-      alert("Error al procesar el pago");
-    }
-  };
-
+  // 🔐 VERIFICACIÓN DE USUARIO
   useEffect(() => {
     const initPage = async () => {
       setLoading(true);
@@ -139,28 +89,12 @@ export default function Page() {
         <style>{fontStyles}</style>
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
-          <h1
-            style={{
-              textAlign: "center",
-              fontFamily: "'Playfair Display', serif",
-              color: "#3D2B1F",
-              fontSize: "3rem",
-              marginBottom: "10px",
-            }}
-          >
+          <h1 style={{ textAlign: "center", fontSize: "3rem", color: "#3D2B1F" }}>
             Nuestra Lista de Pasteles
           </h1>
 
-          <p
-            style={{
-              textAlign: "center",
-              fontFamily: "'Montserrat', sans-serif",
-              color: "#70645C",
-              marginBottom: "50px",
-              fontSize: "1.1rem",
-            }}
-          >
-            Elige tu favorito o personalízalo para cada ocasión a tu medida selecciona el que mas te gusta.
+          <p style={{ textAlign: "center", color: "#70645C" }}>
+            Elige tu favorito o personalízalo
           </p>
 
           <div
@@ -175,50 +109,10 @@ export default function Page() {
                 key={p.id}
                 onClick={() => setPastelSeleccionado(p)}
                 className={styles.card}
-                style={{
-                  padding: "20px",
-                  borderRadius: "24px",
-                  border: "1px solid #F1E9E4",
-                  boxShadow: "0 10px 20px rgba(0,0,0,0.03)",
-                  cursor: "pointer",
-                }}
               >
-                <div
-                  style={{
-                    overflow: "hidden",
-                    borderRadius: "18px",
-                    marginBottom: "15px",
-                  }}
-                >
-                  <img
-                    src={p.imagen_url}
-                    style={{
-                      width: "100%",
-                      height: "250px",
-                      objectFit: "cover",
-                    }}
-                    alt={p.nombre}
-                  />
-                </div>
-
-                <h2
-                  style={{
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: "1.5rem",
-                    color: "#3D2B1F",
-                  }}
-                >
-                  {p.nombre}
-                </h2>
-
-                <p
-                  style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    color: "#8E8279",
-                  }}
-                >
-                  {p.descripcion}
-                </p>
+                <img src={p.imagen_url} style={{ width: "100%", height: "250px" }} />
+                <h2>{p.nombre}</h2>
+                <p>{p.descripcion}</p>
               </div>
             ))}
           </div>
@@ -246,7 +140,8 @@ export default function Page() {
           </div>
         </div>
 
-        <Modalpastel pastel={pastelSeleccionado} pagar={pagar} />
+        {/* 🔥 MODAL SIN PAGO AQUÍ */}
+        <Modalpastel pastel={pastelSeleccionado} />
       </div>
 
       <Footer />
