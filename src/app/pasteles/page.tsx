@@ -26,7 +26,7 @@ async function obtenerPasteles() {
 }
 
 export default function Page() {
-  const router = useRouter(); // 🔥 faltaba
+  const router = useRouter(); // faltaba
 
   const [pasteles, setPasteles] = useState<any[]>([]);
   const [pastelSeleccionado, setPastelSeleccionado] = useState<any>(null);
@@ -36,12 +36,29 @@ export default function Page() {
   const [user, setUser] = useState<any>(null);
   const [pedidos, setPedidos] = useState<any[]>([]);
 
+
   // ✅ FUNCIÓN DE PAGO 
+  
   const pagar = async (data: any) => {
     try {
+      const { data: pedido, error } = await supabase
+      .from("pedidos")
+      .insert([
+        {
+          user_id: user.id,
+          mensaje_personalizado: data.nombre, // puedes cambiarlo si quieres
+          estado: "pendiente",
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error("Error creando pedido");
+    }
       const res = await fetch("/api/mercadopago", {
         method: "POST",
-        credentials: "include", // 🔥 CLAVE para enviar sesión
+        credentials: "include", // 
         headers: {
           "Content-Type": "application/json",
         },

@@ -13,45 +13,69 @@ const supabase = createClient(
 
 export async function POST(req: Request) {
   try {
-    let body;
+    const body = await req.json().catch(() => ({}));
 
-    try {
-      body = await req.json();
-    } catch {
-      body = {};
+    console.log("🔥 WEBHOOK:", body);
+
+    const paymentId =
+      body?.data?.id ||
+      body?.id ||
+      body?.resource;
+
+    if (!paymentId) {
+      return NextResponse.json({ ok: true });
     }
-    console.log("WEBHOOK:", body);
-    console.log("HEADERS:", req.headers);
 
-    const paymentId = body.data?.id || body.resource;
+    const payment = new Payment(client);
+    const paymentData = await payment.get({ id: paymentId });
 
-    if (paymentId) {
-      const payment = new Payment(client);
-      const paymentData = await payment.get({ id: paymentId });
+    console.log("💳 PAYMENT:", paymentData);
 
-      const status = paymentData.status;
-      const pedidoId = paymentData.external_reference;
+    const status = paymentData.status;
+    const pedidoId = paymentData.external_reference;
 
-      if (status === "approved") {
-        await supabase.from("pagos").insert([
+    if (status === "approved" && pedidoId) {
+
+      // 🟢 1. INSERT PAGOS
+      const { error: pagoError } = await supabase
+        .from("pagos")
+        .insert([
           {
             pedido_id: pedidoId,
             total: paymentData.transaction_amount,
-            estado: status,
+            estado: "pagado",
             metodo: paymentData.payment_method_id,
           },
         ]);
 
-        await supabase
-          .from("pedidos")
-          .update({ estado: "pagado" })
-          .eq("id", pedidoId);
-      }
+      console.log("💰 PAGO ERROR:", pagoError);
+
+      // 🟢 2. UPDATE PEDIDO
+      const { error: pedidoError } = await supabase
+        .from("pedidos")
+        .update({ estado: "pagado" })
+        .eq("id", pedidoId);
+
+      console.log("📦 PEDIDO ERROR:", pedidoError);
+
+      // 🔥 3. INSERT DETALLE_PEDIDO (NUEVO)
+      const { error: detalleError } = await supabase
+        .from("detalle_pedido")
+        .insert([
+          {
+            pedido_id: pedidoId,
+            cantidad: 1, // ⚠️ por defecto (ajustable)
+            precio: paymentData.transaction_amount,
+          },
+        ]);
+
+      console.log("🍰 DETALLE ERROR:", detalleError);
     }
 
     return NextResponse.json({ ok: true });
+
   } catch (error) {
-    console.error("Error webhook:", error);
+    console.error("❌ WEBHOOK ERROR:", error);
     return NextResponse.json({ error: "Error" }, { status: 500 });
   }
 }
