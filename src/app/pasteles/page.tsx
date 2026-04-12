@@ -12,6 +12,7 @@ const fontStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
 `;
 
+// 📦 Traer pasteles activos desde Supabase
 async function obtenerPasteles() {
   const { data, error } = await supabase
     .from("pasteles")
@@ -28,46 +29,40 @@ async function obtenerPasteles() {
 export default function Page() {
   const router = useRouter();
 
+  // 🍰 lista de pasteles
   const [pasteles, setPasteles] = useState<any[]>([]);
+
+  // 🍰 pastel seleccionado para el modal
   const [pastelSeleccionado, setPastelSeleccionado] = useState<any>(null);
 
-  const [loading, setLoading] = useState(false);
+  // 🔐 usuario autenticado
   const [user, setUser] = useState<any>(null);
-  const [pedidos, setPedidos] = useState<any[]>([]);
 
-  // 🔐 VERIFICACIÓN DE USUARIO
+  // 📦 carga inicial
   useEffect(() => {
     const initPage = async () => {
-      setLoading(true);
-
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
+      // si no hay usuario → login
       if (!user) {
         router.replace("/login");
         return;
       }
 
       setUser(user);
-
-      const res = await fetch("/api/admin/pedidos", {
-        credentials: "include",
-      });
-
-      const data = await res.json();
-      setPedidos(data);
-
-      setLoading(false);
     };
 
     initPage();
   }, [router]);
 
+  // 🎨 bootstrap scripts
   useEffect(() => {
     import("bootstrap/dist/js/bootstrap.bundle.min.js" as any);
   }, []);
 
+  // 🍰 cargar pasteles
   useEffect(() => {
     async function cargar() {
       const data = await obtenerPasteles();
@@ -89,6 +84,8 @@ export default function Page() {
         <style>{fontStyles}</style>
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px" }}>
+          
+          {/* 🏷️ TÍTULO */}
           <h1 style={{ textAlign: "center", fontSize: "3rem", color: "#3D2B1F" }}>
             Nuestra Lista de Pasteles
           </h1>
@@ -97,6 +94,7 @@ export default function Page() {
             Elige tu favorito o personalízalo
           </p>
 
+          {/* 🍰 GRID DE PASTELES */}
           <div
             style={{
               display: "grid",
@@ -107,22 +105,27 @@ export default function Page() {
             {pasteles.map((p) => (
               <div
                 key={p.id}
-                onClick={() => setPastelSeleccionado(p)}
+                onClick={() => setPastelSeleccionado(p)} // 👉 selecciona pastel
                 className={styles.card}
               >
-                <img src={p.imagen_url} style={{ width: "100%", height: "250px" }} />
+                <img
+                  src={p.imagen_url}
+                  style={{ width: "100%", height: "250px" }}
+                />
                 <h2>{p.nombre}</h2>
                 <p>{p.descripcion}</p>
               </div>
             ))}
           </div>
 
+          {/* 🍰 TEXTO DE SELECCIÓN */}
           {pastelSeleccionado && (
             <p style={{ marginTop: "20px", textAlign: "center" }}>
               Seleccionaste: <strong>{pastelSeleccionado.nombre}</strong>
             </p>
           )}
 
+          {/* 🎯 BOTÓN ABRIR MODAL */}
           <div className="text-center mt-4">
             <button
               className="btn"
@@ -140,7 +143,7 @@ export default function Page() {
           </div>
         </div>
 
-        {/* 🔥 MODAL SIN PAGO AQUÍ */}
+        {/*  MODAL (SIN PAGO AQUÍ) */}
         <Modalpastel pastel={pastelSeleccionado} />
       </div>
 
