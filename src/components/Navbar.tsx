@@ -71,7 +71,7 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = async () => {
-    // --- PASO 1: ACTUALIZACIÓN INSTANTÁNEA ---
+    // - PASO 1: ACTUALIZACIÓN INSTANTÁNEA --
     // Cambiamos el estado local de inmediato para que el Navbar 
     // muestre "Login / Registro" sin esperar al servidor.
     setUser(null);
@@ -96,16 +96,18 @@ export default function Navbar() {
   return (
     <nav
       style={{
-        background: "linear-gradient(to bottom, #4b2c20 0%, #562504 50%, #3c1508 100%)",
+        // Gradiente sutil que termina exactamente en el color de la imagen
         position: "relative",
-        zIndex: 100, // capa de atras navbar chocolate
-        border: "none"
+        border: "none",
+        paddingBottom: '0', // Asegúrate de que no tenga padding inferior
+        zIndex: 1000, // Asegura que el nav esté arriba
+        overflow: "visible"
       }}
       className={`navbar navbar-expand-lg navbar-dark py-2 ${scrolled ? "scrolled" : ""}`}
     >
       <div className="container">
         {/* 1. LOGO IZQUIERDA */}
-        <Link href="/" className="navbar-brand fw-bold">
+        <Link href="/" className="navbar-brand fw-bold" >
           🍰 Pastelería El Bizcocho
         </Link>
 
@@ -150,11 +152,19 @@ export default function Navbar() {
       </div>
 
       {/* CHOCOLATE DERRETIDO */}
-      <div className="nav-drip" style={{ position: 'absolute', top: '100%', left: 0, width: '100%', height: '35px', zIndex: -1, lineHeight: 0 }}>
-        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
-          <path fill="#3c1508" d="M0,0 L1440,0 L1440,40 C1320,100 1200,100 1080,40 C960,-20 840,-20 720,40 C600,100 480,100 360,40 C240,-20 120,-20 0,40 Z"></path>
-        </svg>
-      </div>
+      <div style={{
+        position: 'absolute',
+        top: 0, // Solapado 2px para fundirse con el fondo oscuro del nav
+        left: 0,
+        width: '100%',
+        height: '230px', // Altura de las gotas
+        backgroundImage: "url('/drip.png')", // <--- Asegúrate de que se llame así en tu carpeta /public
+        backgroundSize: 'contain',
+        lineHeight: 0,
+        zIndex: -100, // Queda justo debajo del borde del navbar que es el chocolate la imagen
+      }}
+      />
+
     </nav>
   );
 

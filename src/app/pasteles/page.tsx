@@ -81,7 +81,7 @@ export default function Page() {
         style={{
           backgroundColor: "#FCF9F6",
           width: "100%",
-          padding: "60px 0",
+          paddingTop: "130px ",
           minHeight: "100vh",
         }}
       >

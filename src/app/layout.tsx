@@ -4,8 +4,14 @@ import "./globals.css";
 import "@/styles/custom.css";
 import Navbar from "@/components/Navbar";
 import Script from "next/script";
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import { Playfair_Display, Poppins } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
+
+const jakarta = Plus_Jakarta_Sans({ 
+  subsets: ['latin'],
+  weight: ['800'], // Usamos 800 para que sea bien gruesa como el ejemplo
+});
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -29,7 +35,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={poppins.className}>
+      <body className={jakarta.className}>
         <CartProvider>
           <Navbar />
           <main className="container">{children}</main>

@@ -8,4 +8,24 @@ body {
   min-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  padding-right: 0 !important; /* Evita que el navbar se mueva */
+  background-color: #fff5f2;    /* Un tono crema muy suave como Dakingo */
+}
+
+
+:root {
+  --font-main: 'Plus Jakarta Sans', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-main);
+  font-weight: 800;
+  color: #3c1508; /* Tu color chocolate */
+  letter-spacing: -0.5px;
+}
+
+p, span, a {
+  font-family: var(--font-main);
+  font-weight: 500;
+  color: #5d4037; /* Un marrón más suave para que no sea tan pesado */
 }

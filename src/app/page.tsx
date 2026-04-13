@@ -35,8 +35,8 @@ export default function HomePage() {
         
         <main>
           {/* HERO */}
-          <section className="hero">
-            <div className="container text-center">
+          <section className="hero" style={{paddingTop:"140px", paddingBottom:"120px"}} >
+            <div className="container text-center"  >
               <h1 className="hero-title">
                 🎂 Pasteles personalizados para tus Momentos Especiales
               </h1>

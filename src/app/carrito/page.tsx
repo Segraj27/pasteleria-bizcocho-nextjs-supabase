@@ -71,7 +71,7 @@ export default function Carrito() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{paddingTop:"50px"}}>
       <h1 className="mb-4">🛒 Tu carrito</h1>
 
       {/* BOTÓN HISTORIAL SIEMPRE VISIBLE */}
