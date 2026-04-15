@@ -16,6 +16,10 @@ function getSupabaseWithAuth(token: string) {
           Authorization: `Bearer ${token}`,
         },
       },
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
     },
   );
 }
@@ -24,16 +28,20 @@ function getSupabaseWithAuth(token: string) {
 export async function createPedido(data: PedidoInput, token: string) {
   const supabase = getSupabaseWithAuth(token);
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
+  // Obtener usuario correctamente
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  console.log("USER DATA:", userData);
+  console.log("USER ERROR:", userError);
+
+  const user = userData?.user;
 
   if (!user) {
     throw new Error("Usuario no autenticado");
   }
 
-  const { data: result, error } = await supabase
+  // Insertar pedido
+  const { data: result, error: insertError } = await supabase
     .from("pedidos")
     .insert({
       user_id: user.id,
@@ -46,7 +54,7 @@ export async function createPedido(data: PedidoInput, token: string) {
     .select()
     .single();
 
-  if (error) throw error;
+  if (insertError) throw insertError;
 
   return result;
 }
@@ -55,10 +63,14 @@ export async function createPedido(data: PedidoInput, token: string) {
 export async function getPedidosByUser(token: string) {
   const supabase = getSupabaseWithAuth(token);
 
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
+  console.log("TOKEN RECIBIDO:", token);
+
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  console.log("USER DATA:", userData);
+  console.log("USER ERROR:", userError);
+
+  const user = userData?.user;
 
   if (!user) {
     throw new Error("Usuario no autenticado");

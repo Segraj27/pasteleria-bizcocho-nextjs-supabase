@@ -40,13 +40,15 @@ export default function LoginPage() {
     // ✅ login exitoso
     setMessage("Inicio de sesión exitoso 🎉");
 
+    setLoading(false);
+
     // 🔥 recarga completa para sincronizar sesión
     window.location.href = "/pedidos";
   };
 
   return (
     <div className="auth-container">
-     {/* <img src="/decor/cake.png" className="decor-left" />}
+      {/* <img src="/decor/cake.png" className="decor-left" />}
       {/*<img src="/decor/cupcake.png" className="decor-right" />*/}
 
       <form onSubmit={handleLogin} className="auth-form">
