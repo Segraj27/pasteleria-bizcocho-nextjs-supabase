@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 
+import styles from "./carrito.module.css";
+
 export default function Carrito() {
   const { cart, removeFromCart, clearCart } = useCart();
 
@@ -70,58 +72,65 @@ export default function Carrito() {
     }
   };
 
-  return (
-    <div className="container mt-5" style={{paddingTop:"50px"}}>
-      <h1 className="mb-4">🛒 Tu carrito</h1>
-
-      {/* BOTÓN HISTORIAL SIEMPRE VISIBLE */}
-      <div className="mb-3">
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => router.push("/historial")}
-        >
-          📦 Ver historial de compras
+ return (
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Tu selección</h1>
+        <button className={styles.btnHistory} onClick={() => router.push("/historial")}>
+          📦 Historial de pedidos
         </button>
-      </div>
+      </header>
 
       {cart.length === 0 ? (
-        <p>No hay productos en el carrito</p>
+        <div className="text-center py-5">
+          <p className="text-muted">Tu carrito está vacío.</p>
+          <button className="btn btn-dark rounded-pill px-4" onClick={() => router.push("/")}>
+            Explorar Pasteles
+          </button>
+        </div>
       ) : (
         <>
           {cart.map((item) => (
-            <div
-              key={item.id}
-              className="card mb-3 p-3 shadow-sm d-flex flex-row justify-content-between align-items-center"
-            >
-              <div>
-                <h5>{item.nombre}</h5>
-                <p className="mb-1">Tamaño: {item.personalizacion.tamaño}</p>
-                <p className="mb-1">Ocasión: {item.personalizacion.ocasion}</p>
-                <p className="mb-1">Cantidad: {item.cantidad}</p>
-                <p className="fw-bold">
-                  ${item.precio * item.cantidad} COP
-                </p>
+            <div key={item.id} className={styles.premiumCard}>
+              <div className={styles.imageContainer}>
+            { /*<img src={item.imagen || "/placeholder-cake.jpg"} alt={item.nombre} />*/}
               </div>
 
-              <button
-                className="btn btn-danger"
-                onClick={() => removeFromCart(item.id)}
-              >
-                ❌
-              </button>
+              <div className={styles.infoContainer}>
+                <div className="d-flex justify-content-between align-items-start">
+                  <h3 className={styles.productTitle}>{item.nombre}</h3>
+                  <button className={styles.btnRemove} onClick={() => removeFromCart(item.id)}>
+                    ✕
+                  </button>
+                </div>
+                
+                <div className={styles.detailsGrid}>
+                  <span><strong>Tamaño:</strong> {item.personalizacion.tamaño}</span>
+                  <span><strong>Ocasión:</strong> {item.personalizacion.ocasion}</span>
+                  <span><strong>Cant:</strong> {item.cantidad}</span>
+                </div>
+
+                <div className={styles.price}>
+                  ${(item.precio * item.cantidad).toLocaleString()} COP
+                </div>
+              </div>
             </div>
           ))}
 
-          <h3 className="mt-4">Total: ${total} COP</h3>
-
-          <div className="mt-3 d-flex gap-2">
-            <button className="btn btn-success" onClick={pagar}>
-              Pagar
-            </button>
-
-            <button className="btn btn-outline-danger" onClick={clearCart}>
-              Vaciar carrito
-            </button>
+          <div className={styles.checkoutSummary}>
+            <div className="d-flex justify-content-between align-items-end">
+              <div>
+                <h4 className={styles.totalAmount}>${total.toLocaleString()} cop</h4>
+              </div>
+              <div className="d-flex align-items-center gap-4">
+                <button className={styles.btnClear} onClick={clearCart}>
+                  Vaciar carrito
+                </button>
+                <button className={styles.btnPay} onClick={pagar}>
+                  Proceder al pago
+                </button>
+              </div>
+            </div>
           </div>
         </>
       )}

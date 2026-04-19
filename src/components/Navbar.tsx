@@ -100,7 +100,7 @@ export default function Navbar() {
         // Gradiente sutil que termina exactamente en el color de la imagen
         position: "relative",
         border: "none",
-        paddingBottom: '0', // Asegúrate de que no tenga padding inferior
+        marginBottom: '35px', // Asegúrate de que no tenga padding inferior
         zIndex: 1000, // Asegura que el nav esté arriba
         overflow: "visible"
       }}

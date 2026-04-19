@@ -1,23 +1,22 @@
 "use client";
 
+const fontStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
+`;
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Modalpastel from "@/app/pasteles/modalpastel";
 import styles from "@/app/pasteles/page.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import { useRouter } from "next/navigation";
-
-const fontStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
-`;
 
 // 📦 Traer pasteles activos desde Supabase
 async function obtenerPasteles() {
   const { data, error } = await supabase
     .from("pasteles")
-    .select("*")
-    .eq("activo", true);
+    .select("id, nombre, precio, imagen_url, descripcion")
+    .eq("activo", true)
+    .range(0, 11);
 
   if (error) {
     console.error("Error no hay datos", error);
@@ -25,7 +24,7 @@ async function obtenerPasteles() {
   }
   return data.map((p) => ({
     ...p,
-    precio: p.precio ?? 0, // 👈 asegura que nunca sea undefined
+    precio: p.precio ?? 0,
   }));
 }
 
@@ -41,39 +40,27 @@ export default function Page() {
   // 🔐 usuario autenticado
   const [user, setUser] = useState<any>(null);
 
-  // 📦 carga inicial
+  // 📦 CARGA VELOZ: Auth y Datos al mismo tiempo
   useEffect(() => {
     const initPage = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      // si no hay usuario → login
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         router.replace("/login");
         return;
       }
-
       setUser(user);
     };
 
-    initPage();
-  }, [router]);
-
-  // 🎨 bootstrap scripts
-  useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js" as any);
-  }, []);
-
-  // 🍰 cargar pasteles
-  useEffect(() => {
-    async function cargar() {
+    const cargarDatos = async () => {
       const data = await obtenerPasteles();
-      //  console.log("DATOS 👉", data); // 👈 DEBUG verificar que si trae el json de la db comentariado
       setPasteles(data);
-    }
-    cargar();
-  }, []);
+    };
+
+    initPage();
+    cargarDatos();
+    
+    import("bootstrap/dist/js/bootstrap.bundle.min.js" as any);
+  }, [router]);
 
   return (
     <>
@@ -92,7 +79,7 @@ export default function Page() {
           {/* 🏷️ TÍTULO */}
           <h1 style={{
             textAlign: "center",
-            fontFamily: "'Playfair Display', serif", // 👈 Aplicamos la fuente elegante, 
+            fontFamily: "'Playfair Display', serif", 
             fontSize: "3rem",
             color: "#3D2B1F"
           }}>
@@ -100,7 +87,7 @@ export default function Page() {
           </h1>
 
           <p style={{
-            padding: "20px", color: "#70645C", fontFamily: "'Montserrat', sans-serif", // 👈 Fuente limpia para el subtítulo y elegancia
+            padding: "20px", color: "#70645C", fontFamily: "'Montserrat', sans-serif",
           }}>
             Elige tu favorito o personalízalo para cada ocasión a tu medida selecciona el que mas te gusta.
           </p>
@@ -116,12 +103,12 @@ export default function Page() {
             {pasteles.map((p) => (
               <div
                 key={p.id}
-                onClick={() => setPastelSeleccionado(p)} // 👉 selecciona pastel
+                onClick={() => setPastelSeleccionado(p)} // 👉 Aquí se selecciona para el modal
                 className={styles.card}
                 style={{
                   cursor: 'pointer',
                   transition: 'transform 0.3s ease',
-                  borderRadius: '20px', // Bordes redondeados de la foto
+                  borderRadius: '20px',
                   overflow: 'hidden',
                   backgroundColor: '#fff',
                   border: 'none',
@@ -129,13 +116,16 @@ export default function Page() {
                 }}
               >
                 <img
-                  src={p.imagen_url}
+                  src={p.imagen_url} 
+                  loading={p.id <= 3 ? "eager" : "lazy"}
+                  decoding="async"
                   style={{
                     width: "100%",
                     height: "280px",
-                    objectFit: "cover", // 👈 Importante para que no se deformen las fotos
-                    borderRadius: '20px 20px 0 0'
+                    objectFit: "cover",
+                    borderRadius: '20px 20px 20px 20px'
                   }}
+                  fetchPriority={p.id <= 3 ? "high" : "low"} 
                 />
                 <div style={{ padding: '20px' }}>
                   <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', color: '#3D2B1F' }}>
@@ -154,7 +144,7 @@ export default function Page() {
             </p>
           )}
 
-          {/* 🎯 BOTÓN ABRIR MODAL */}
+          {/* 🎯 BOTÓN PERSONALIZAR (Tu botón original intacto) */}
           <div className="text-center mt-4">
             <button
               className="btn"
@@ -172,10 +162,9 @@ export default function Page() {
           </div>
         </div>
 
-        {/*  MODAL (SIN PAGO AQUÍ) */}
+        {/* 🍰 MODAL (Donde ocurre la magia del pago) */}
         <Modalpastel pastel={pastelSeleccionado} />
       </div>
-
     </>
   );
 }

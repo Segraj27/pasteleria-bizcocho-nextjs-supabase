@@ -39,7 +39,7 @@ export default function RootLayout({
       <body className={jakarta.className}>
         <CartProvider>
           <Navbar />
-          <main className="container min-vh-100" style={{paddingTop:"80px"}}>
+          <main className="container-fluid px-30 px-md-4 min-vh-100" > 
             {children}
           </main>
           <Footer />
