@@ -10,7 +10,6 @@ type Item = {
   personalizacion: {
     ocasion: string;
     tamaño: string;
-    cantidad: number;
   };
 };
 

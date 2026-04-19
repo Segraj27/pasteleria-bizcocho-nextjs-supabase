@@ -1,5 +1,8 @@
 import { SizeSelector, Size } from "./tamaños/sizepasteles";
-import { OccasionSelector, Occasion } from "@/app/pasteles/ocasiones/OccasionSelector";
+import {
+  OccasionSelector,
+  Occasion,
+} from "@/app/pasteles/ocasiones/OccasionSelector";
 
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
@@ -7,10 +10,10 @@ import { useRouter } from "next/navigation";
 
 // 📦 Ajuste del tipo para incluir imagen_url
 type Pastel = {
-  id?: string | number; 
+  id?: string | number;
   nombre: string;
   precio?: number;
-  imagen_url?: string; 
+  imagen_url?: string;
 };
 
 type Props = {
@@ -29,10 +32,10 @@ export default function Modalpastel({ pastel }: Props) {
     size === "Pequeño"
       ? 30000
       : size === "Mediano"
-      ? 50000
-      : size === "Grande"
-      ? 80000
-      : 30000;
+        ? 50000
+        : size === "Grande"
+          ? 80000
+          : 30000;
 
   const total = precioUnitario * cantidad;
 
@@ -49,14 +52,23 @@ export default function Modalpastel({ pastel }: Props) {
           <div className="modal-body p-0">
             <div className="container-fluid">
               <div className="row">
-
                 {/* IZQUIERDA */}
                 <div className="col-12 col-lg-8 p-4 p-lg-5">
                   <div className="d-flex justify-content-between align-items-center mb-4">
-                    <h4 style={{ fontFamily: "'Quicksand', sans-serif", fontWeight: 700, color: "#340101" }}>
+                    <h4
+                      style={{
+                        fontFamily: "'Quicksand', sans-serif",
+                        fontWeight: 700,
+                        color: "#340101",
+                      }}
+                    >
                       Personaliza tu pastel
                     </h4>
-                    <button type="button" className="btn-close d-md-none" data-bs-dismiss="modal" />
+                    <button
+                      type="button"
+                      className="btn-close d-md-none"
+                      data-bs-dismiss="modal"
+                    />
                   </div>
 
                   <section className="mb-5">
@@ -88,7 +100,10 @@ export default function Modalpastel({ pastel }: Props) {
                   style={{ backgroundColor: "#FFF5F7", minHeight: "100%" }}
                 >
                   <div className="bg-white rounded-4 p-3 mb-4 shadow-sm text-center">
-                    <span className="badge rounded-pill mb-2" style={{ backgroundColor: "#FFD1DC", color: "#D81B60" }}>
+                    <span
+                      className="badge rounded-pill mb-2"
+                      style={{ backgroundColor: "#FFD1DC", color: "#D81B60" }}
+                    >
                       Vista Previa
                     </span>
                     <div className="py-4">
@@ -128,14 +143,13 @@ export default function Modalpastel({ pastel }: Props) {
                       if (!pastel) return;
 
                       addToCart({
-                        id: pastel.id || crypto.randomUUID(),
+                        id: String(pastel.id || crypto.randomUUID()),
                         nombre: pastel.nombre,
                         precio: precioUnitario,
                         cantidad: cantidad,
-                        imagen: pastel.imagen_url, // se añade la imagen al carrito
                         personalizacion: {
-                          ocasion: occasion,
-                          tamaño: size,
+                          ocasion: occasion || "",
+                          tamaño: size || "",
                         },
                       });
 
