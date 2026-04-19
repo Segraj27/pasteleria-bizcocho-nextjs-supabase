@@ -3,6 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "./globals.css";
 import "@/styles/custom.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import Script from "next/script";
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import { Playfair_Display, Poppins } from "next/font/google";
@@ -10,7 +11,7 @@ import { CartProvider } from "@/context/CartContext";
 
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ['latin'],
-  weight: ['800'], // Usamos 800 para que sea bien gruesa como el ejemplo
+  weight: ['800'], // Usamos 800 para que sea bien gruesa como  ejemplo
 });
 
 const playfair = Playfair_Display({
@@ -39,6 +40,7 @@ export default function RootLayout({
         <CartProvider>
           <Navbar />
           <main className="container">{children}</main>
+          <Footer />
         </CartProvider>
 
         <Script

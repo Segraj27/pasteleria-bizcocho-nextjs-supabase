@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import Modalpastel from "@/app/pasteles/modalpastel";
 import styles from "@/app/pasteles/page.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Footer from "@/components/Footer";
+
 import { useRouter } from "next/navigation";
 
 const fontStyles = `
@@ -176,7 +176,6 @@ export default function Page() {
         <Modalpastel pastel={pastelSeleccionado} />
       </div>
 
-      <Footer />
     </>
   );
 }

@@ -1,0 +1,10 @@
+
+
+@media (min-width: 992px) {
+  .miNavbar {
+    justify-content: space-around !important; 
+  }
+}
+
+/*obligo a el Navbar que quede alrededor de los extremos con bordes para que no queden padding espacio y se ajuste despues del tamaño 
+992px*/

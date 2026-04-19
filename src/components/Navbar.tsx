@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import UserDropdown from "./userdropdown/userdropdown";
+import navbarCSS from "./navbarCss/navbar.module.css";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -103,7 +104,7 @@ export default function Navbar() {
         zIndex: 1000, // Asegura que el nav esté arriba
         overflow: "visible"
       }}
-      className={`navbar navbar-expand-lg navbar-dark py-2 ${scrolled ? "scrolled" : ""}`}
+      className={`navbar navbar-expand-lg ${navbarCSS.miNavbar} navbar-dark py-2 ${scrolled ? "scrolled" : ""}`}
     >
       <div className="container">
         {/* 1. LOGO IZQUIERDA */}

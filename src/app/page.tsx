@@ -102,8 +102,6 @@ export default function HomePage() {
 
       </div>
 
-      {/* 4. FOOTER: Ahora sí, importado y bien ubicado */}
-      <Footer />
     </div>
   );
 }

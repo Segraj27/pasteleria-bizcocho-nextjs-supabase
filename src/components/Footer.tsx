@@ -1,7 +1,5 @@
 "use client";
 
-import React from 'react';
-
 export default function Footer() {
   return (
     <footer style={{
@@ -13,7 +11,7 @@ export default function Footer() {
       fontFamily: "'Montserrat', sans-serif"
     }}>
       <div style={{
-        maxWidth: "1200px",
+        maxWidth: "1550px",
         margin: "0 auto",
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
