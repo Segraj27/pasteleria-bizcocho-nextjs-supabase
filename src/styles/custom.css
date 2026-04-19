@@ -75,6 +75,7 @@
 }
 
 .hero-title {
+  padding-top: 34px;
   font-size: 2.8rem;
   font-weight: 700;
   color: #4e342e;
@@ -82,6 +83,7 @@
 }
 
 .hero-subtitle {
+  
   font-size: 1.15rem;
   color: #5d4037;
   max-width: 640px;
