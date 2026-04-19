@@ -9,13 +9,24 @@
 /*obligo a el Navbar que quede alrededor de los extremos con bordes para que no queden padding espacio y se ajuste despues del tamaño 
 992px*/
 
+/* 📱 móvil */
 .drip {
-  background-size: cover; /* 📱 móvil */
+  background-size: cover; 
+  height: 400px;
 }
 
-/* 💻 pantallas grandes */
+/* 🧮 pantalla tablet */
 @media (min-width: 768px) {
   .drip {
+    height: 300px;
+    background-size: contain; /*aqui arranca para que este siga con la forma*/
+  }
+}
+
+/* 🧮 pantalla Laptop o mas grandes */
+@media (min-width: 1000px) {
+  .drip {
+    height: 200px;
     background-size: contain; /*aqui arranca para que este siga con la forma*/
   }
 }

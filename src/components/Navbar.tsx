@@ -157,9 +157,8 @@ export default function Navbar() {
         position: 'absolute',
         top: 0, // Solapado 2px para fundirse con el fondo oscuro del nav
         width: '100%',
-        height: '200px', // Altura de las gotas
+         // Altura de las gotas
         backgroundImage: "url('/drip.png')", // <--- Asegúrate de que se llame así en tu carpeta /public
-       
         lineHeight: 0,
         zIndex: -100, // Queda justo debajo del borde del navbar que es el chocolate la imagen
       }}
