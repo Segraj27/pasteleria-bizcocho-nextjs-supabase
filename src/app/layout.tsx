@@ -9,7 +9,7 @@ import { Plus_Jakarta_Sans } from 'next/font/google';
 import { Playfair_Display, Poppins } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 
-const jakarta = Plus_Jakarta_Sans({ 
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['800'], // Usamos 800 para que sea bien gruesa como  ejemplo
 });
@@ -39,7 +39,7 @@ export default function RootLayout({
       <body className={jakarta.className}>
         <CartProvider>
           <Navbar />
-          <main className="container min-vh-100">
+          <main className="container min-vh-100" style={{paddingTop:"80px"}}>
             {children}
           </main>
           <Footer />

@@ -153,14 +153,13 @@ export default function Navbar() {
       </div>
 
       {/* CHOCOLATE DERRETIDO */}
-      <div style={{
+      <div className={navbarCSS.drip} style={{
         position: 'absolute',
         top: 0, // Solapado 2px para fundirse con el fondo oscuro del nav
-        left: 0,
         width: '100%',
-        height: '230px', // Altura de las gotas
+        height: '200px', // Altura de las gotas
         backgroundImage: "url('/drip.png')", // <--- Asegúrate de que se llame así en tu carpeta /public
-        backgroundSize: 'contain',
+       
         lineHeight: 0,
         zIndex: -100, // Queda justo debajo del borde del navbar que es el chocolate la imagen
       }}

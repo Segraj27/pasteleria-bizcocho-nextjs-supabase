@@ -6,7 +6,7 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100%;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
   overflow-y: auto;
   padding-right: 0 !important; /* Evita que el navbar se mueva */
   background-color: #fff5f2;    /* Un tono crema muy suave como Dakingo */
@@ -20,7 +20,7 @@ body {
 h1, h2, h3 {
   font-family: var(--font-main);
   font-weight: 800;
-  color: #3c1508; /* Tu color chocolate */
+  color: #ecded9; /*  color chocolate */
   letter-spacing: -0.5px;
 }
 

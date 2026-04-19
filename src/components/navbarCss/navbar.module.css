@@ -8,3 +8,14 @@
 
 /*obligo a el Navbar que quede alrededor de los extremos con bordes para que no queden padding espacio y se ajuste despues del tamaño 
 992px*/
+
+.drip {
+  background-size: cover; /* 📱 móvil */
+}
+
+/* 💻 pantallas grandes */
+@media (min-width: 768px) {
+  .drip {
+    background-size: contain; /*aqui arranca para que este siga con la forma*/
+  }
+}
