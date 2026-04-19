@@ -17,6 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 30px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
 }
