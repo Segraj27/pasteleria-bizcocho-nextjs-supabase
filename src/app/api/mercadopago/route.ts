@@ -21,6 +21,8 @@ export async function POST(request: Request) {
           get(name: string) {
             return cookieStore.get(name)?.value;
           },
+           set() {},
+           remove() {},
         },
       }
     );
