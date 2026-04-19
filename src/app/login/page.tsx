@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { Mail, Lock, Loader2 } from "lucide-react"; 
+import styles from "./login.module.css"; // Importación correcta
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -19,63 +21,73 @@ export default function LoginPage() {
       password,
     });
 
-    // ❌ error en login
     if (error) {
-      setMessage(error.message);
+      setMessage("Credenciales incorrectas. Intenta de nuevo.");
       setLoading(false);
       return;
     }
 
-    // 🔥 verificar sesión correctamente
     const session = data.session;
-
-    console.log("SESSION LOGIN:", session);
-
     if (!session) {
-      setMessage("No se guardó la sesión");
+      setMessage("Error al sincronizar la sesión.");
       setLoading(false);
       return;
     }
 
-    // ✅ login exitoso
-    setMessage("Inicio de sesión exitoso 🎉");
-
-    setLoading(false);
-
-    // 🔥 recarga completa para sincronizar sesión
     window.location.href = "/pedidos";
   };
 
   return (
-    <div className="auth-container">
-      {/* <img src="/decor/cake.png" className="decor-left" />}
-      {/*<img src="/decor/cupcake.png" className="decor-right" />*/}
+    <div className={styles.authPageWrapper}>
+      <div className={styles.authOverlay}>
+        
+        <form onSubmit={handleLogin} className={styles.premiumAuthForm}>
+          <div className={styles.formHeader}>
+            <h1>Iniciar sesión</h1>
+          </div>
 
-      <form onSubmit={handleLogin} className="auth-form">
-        <h1>Iniciar sesión</h1>
+          <div className={styles.inputGroup}>
+            <Mail className={styles.inputIcon} size={20} />
+            <input
+              type="email"
+              placeholder="Correo electrónico"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={styles.inputField}
+            />
+          </div>
 
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+          <div className={styles.inputGroup}>
+            <Lock className={styles.inputIcon} size={20} />
+            <input
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className={styles.inputField}
+            />
+          </div>
 
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <button type="submit" className={styles.btnLoginPremium} disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 className={styles.spinner} size={20} />
+                <span>Ingresando...</span>
+              </>
+            ) : (
+              "Iniciar sesión"
+            )}
+          </button>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Ingresando..." : "Iniciar sesión"}
-        </button>
-
-        {message && <p className="auth-message">{message}</p>}
-      </form>
+          {message && (
+            <div className={`${styles.authMessage} ${message.includes('exitoso') ? styles.success : styles.error}`}>
+              {message}
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

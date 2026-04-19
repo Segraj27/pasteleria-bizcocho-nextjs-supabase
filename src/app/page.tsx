@@ -26,6 +26,27 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
+const pasteles = [
+    {
+      id: 1,
+      titulo: "Pastel de Chocolate",
+      descripcion: "Bizcocho húmedo de chocolate con relleno de ganache.",
+      imagen: "/images/pastel-chocolate.jpg"
+    },
+    {
+      id: 2,
+      titulo: "Pastel Red Velvet",
+      descripcion: "Clásico red velvet con crema de queso suave.",
+      imagen: "/images/pastel-red-velvet.jpg"
+    },
+    {
+      id: 3,
+      titulo: "Pastel de Vainilla",
+      descripcion: "Vainilla artesanal con frutas frescas.",
+      imagen: "/images/pastel-vainilla.jpg"
+    }
+  ];
+
   return (
     /* 1. Contenedor Maestro: Mantiene el Footer al fondo */
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -56,39 +77,27 @@ export default function HomePage() {
           </section>
 
           {/* PASTELES */}
-          <section className="pasteles">
-            <div className="container">
-              <h2 className="section-title text-center mb-5">
-                Nuestros pasteles más pedidos
-              </h2>
+         <section className="pasteles">
+      <div className="container">
+        <h2 className="section-title text-center mb-5">
+          Nuestros pasteles más pedidos
+        </h2>
 
-              <div className="row g-4">
-                <div className="col-md-4 fade-in">
-                  <PastelCard
-                    titulo="Pastel de Chocolate"
-                    descripcion="Bizcocho húmedo de chocolate con relleno de ganache."
-                    imagen="/images/pastel-chocolate.jpg"
-                  />
-                </div>
-
-                <div className="col-md-4 fade-in">
-                  <PastelCard
-                    titulo="Pastel Red Velvet"
-                    descripcion="Clásico red velvet con crema de queso suave."
-                    imagen="/images/pastel-red-velvet.jpg"
-                  />
-                </div>
-
-                <div className="col-md-4 fade-in">
-                  <PastelCard
-                    titulo="Pastel de Vainilla"
-                    descripcion="Vainilla artesanal con frutas frescas."
-                    imagen="/images/pastel-vainilla.jpg"
-                  />
-                </div>
-              </div>
+        <div className="row g-4">
+          {/* 2. Mapeamos el array para no repetir con el json de pasteles */}
+          {pasteles.map((pastel) => (
+            <div key={pastel.id} className="col-md-4 fade-in">
+              <PastelCard
+                titulo={pastel.titulo}
+                descripcion={pastel.descripcion}
+                imagen={pastel.imagen}
+              />
             </div>
-          </section>
+          ))}
+        </div>
+      </div>
+     </section>
+
         </main>
 
         {/* 3. Carrusel Lateral (Derecha en PC, antes del Footer en Móvil) */}

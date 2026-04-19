@@ -98,9 +98,9 @@ export default function Navbar() {
     <nav
       style={{
         // Gradiente sutil que termina exactamente en el color de la imagen
-        position: "relative",
+        position: "sticky",
         border: "none",
-        marginBottom: '35px', // Asegúrate de que no tenga padding inferior
+        marginBottom: '0px', // Asegúrate de que no tenga padding inferior
         zIndex: 1000, // Asegura que el nav esté arriba
         overflow: "visible"
       }}
@@ -109,7 +109,7 @@ export default function Navbar() {
       <div className="container">
         {/* 1. LOGO IZQUIERDA */}
         <Link href="/" className="navbar-brand fw-bold" >
-          🍰 Pastelería El Bizcocho
+           <h4> 🍰 Pastelería El Bizcocho</h4>
         </Link>
 
         <button className="navbar-toggler" onClick={toggleMenu}>
