@@ -110,7 +110,7 @@ export default function Navbar() {
       <div className="container">
         {/* 1. LOGO IZQUIERDA */}
         <Link href="/" className="navbar-brand fw-bold" >
-           <h4 className="titulo"> 🍰 Pastelería El Bizcocho</h4>
+           <h4 className="titulo"> 🍰 Pastelería El Bizcocho🍪</h4>
         </Link>
 
         <button className="navbar-toggler" onClick={toggleMenu}>

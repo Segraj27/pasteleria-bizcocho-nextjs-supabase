@@ -79,7 +79,7 @@ export default function PedidosPage() {
   if (!user) return null;
 
   return (
-    <div className="container mt-5 "style={{ paddingTop: '150px' }} >
+    <div className="container mt-5 "style={{ paddingTop: '65px' }} >
       <h1 className="text-center mb-4">Panel de pedidos</h1>
 
       <table className="table table-bordered table-striped">

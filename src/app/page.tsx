@@ -59,7 +59,9 @@ export default function HomePage() {
           <section className="hero" style={{ paddingTop: "140px", paddingBottom: "120px" }} >
             <div className="container text-center"  >
               <h1 className="hero-title">
-                🎂 Pasteles personalizados para tus Momentos Especiales
+                🎂 Pasteles personalizados 
+                <h2 className="hero-title">para tus Momentos </h2>
+                  <h3 className="hero-title" style={{paddingBottom: "15px"}}>Especiales 🍩</h3>
               </h1>
 
               <p className="hero-subtitle">
@@ -67,7 +69,7 @@ export default function HomePage() {
                 hechos a mano, con amor y los mejores ingredientes.
               </p>
 
-              <div className="hero-actions">
+              <div className="hero-actions" style={{display:"flex", justifyContent: "flex-end", paddingRight: "10px"}}>
                 <a href="/pasteles" className="btn btn-cta btn-lg">
                   <i className="bi bi-cake2 me-2"></i>
                   Hacer mi pedido
@@ -80,7 +82,7 @@ export default function HomePage() {
           <section className="pasteles">
             <div className="container">
               <h2 className="section-title text-center mb-5">
-                Nuestros pasteles más pedidos
+                Nuestros pasteles más pedidos🥮
               </h2>
 
               <div className="row g-4">

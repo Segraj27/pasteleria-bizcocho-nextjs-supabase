@@ -40,7 +40,7 @@ export default function Historial() {
   }, [router]);
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{paddingTop: "40px"}}>
       <h1 className="mb-4">📦 Historial de compras</h1>
 
       {/*  sin pedidos */}
