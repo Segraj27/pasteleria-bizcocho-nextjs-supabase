@@ -26,7 +26,7 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
-const pasteles = [
+  const pasteles = [
     {
       id: 1,
       titulo: "Pastel de Chocolate",
@@ -50,13 +50,13 @@ const pasteles = [
   return (
     /* 1. Contenedor Maestro: Mantiene el Footer al fondo */
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      
+
       {/* 2. Wrapper del Contenido: Aquí manejamos el carrusel lateral */}
       <div className={styles.mainGrid} style={{ flex: 1 }}>
-        
+
         <main>
           {/* HERO */}
-          <section className="hero" style={{paddingTop:"140px", paddingBottom:"120px"}} >
+          <section className="hero" style={{ paddingTop: "140px", paddingBottom: "120px" }} >
             <div className="container text-center"  >
               <h1 className="hero-title">
                 🎂 Pasteles personalizados para tus Momentos Especiales
@@ -77,37 +77,28 @@ const pasteles = [
           </section>
 
           {/* PASTELES */}
-         <section className="pasteles">
-      <div className="container">
-        <h2 className="section-title text-center mb-5">
-          Nuestros pasteles más pedidos
-        </h2>
+          <section className="pasteles">
+            <div className="container">
+              <h2 className="section-title text-center mb-5">
+                Nuestros pasteles más pedidos
+              </h2>
 
-        <div className="row g-4">
-          {/* 2. Mapeamos el array para no repetir con el json de pasteles */}
-          {pasteles.map((pastel) => (
-            <div key={pastel.id} className="col-md-4 fade-in">
-              <PastelCard
-                titulo={pastel.titulo}
-                descripcion={pastel.descripcion}
-                imagen={pastel.imagen}
-              />
+              <div className="row g-4">
+                {/* 2. Mapeamos el array para no repetir con el json de pasteles */}
+                {pasteles.map((pastel) => (
+                  <div key={pastel.id} className="col-md-4 fade-in">
+                    <PastelCard
+                      titulo={pastel.titulo}
+                      descripcion={pastel.descripcion}
+                      imagen={pastel.imagen}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
-     </section>
+          </section>
 
         </main>
-
-        {/* 3. Carrusel Lateral (Derecha en PC, antes del Footer en Móvil) */}
-        <aside className={styles.sideCarousel}>
-           {/* Aquí insertas tu componente de Carrusel que se mueve solo */}
-           <div className={styles.stickyContainer}>
-             <p className="text-muted text-center">Inspiración del día...</p>
-             {/* <TuComponenteDeCarrusel /> */}
-           </div>
-        </aside>
 
       </div>
 

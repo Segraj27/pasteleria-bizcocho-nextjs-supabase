@@ -1,8 +1,5 @@
 import { SizeSelector, Size } from "./tamaños/sizepasteles";
-import {
-  OccasionSelector,
-  Occasion,
-} from "@/app/pasteles/ocasiones/OccasionSelector";
+import { OccasionSelector, Occasion, } from "@/app/pasteles/ocasiones/OccasionSelector";
 
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
@@ -13,7 +10,7 @@ type Pastel = {
   id?: string | number;
   nombre: string;
   precio?: number;
-  imagen_url?: string;
+  imagen_url?: string; 
 };
 
 type Props = {
@@ -146,6 +143,7 @@ export default function Modalpastel({ pastel }: Props) {
                         id: String(pastel.id || crypto.randomUUID()),
                         nombre: pastel.nombre,
                         precio: precioUnitario,
+                        imagen: pastel.imagen_url,
                         cantidad: cantidad,
                         personalizacion: {
                           ocasion: occasion || "",

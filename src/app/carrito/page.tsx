@@ -75,7 +75,7 @@ export default function Carrito() {
  return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Tu selección</h1>
+        <h1 className={styles.title}>🛒 Tus Pedidos</h1>
         <button className={styles.btnHistory} onClick={() => router.push("/historial")}>
           📦 Historial de pedidos
         </button>
@@ -84,7 +84,7 @@ export default function Carrito() {
       {cart.length === 0 ? (
         <div className="text-center py-5">
           <p className="text-muted">Tu carrito está vacío.</p>
-          <button className="btn btn-dark rounded-pill px-4" onClick={() => router.push("/")}>
+          <button className="btn btn-dark rounded-pill px-4" onClick={() => router.push("/pasteles")}>
             Explorar Pasteles
           </button>
         </div>
@@ -93,7 +93,10 @@ export default function Carrito() {
           {cart.map((item) => (
             <div key={item.id} className={styles.premiumCard}>
               <div className={styles.imageContainer}>
-            { /*<img src={item.imagen || "/placeholder-cake.jpg"} alt={item.nombre} />*/}
+              <img 
+                    src={item.imagen_url || item.imagen || "/placeholder-cake.jpg"} 
+    alt={item.nombre} 
+  />
               </div>
 
               <div className={styles.infoContainer}>

@@ -25,6 +25,7 @@ async function obtenerPasteles() {
   return data.map((p) => ({
     ...p,
     precio: p.precio ?? 0,
+    imagen: p.imagen_url || "/placeholder-cake.jpg",
   }));
 }
 
