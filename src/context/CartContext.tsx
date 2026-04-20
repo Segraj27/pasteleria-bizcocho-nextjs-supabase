@@ -7,6 +7,7 @@ type Item = {
   nombre: string;
   precio: number;
   cantidad: number;
+  imagen?: string;
   personalizacion: {
     ocasion: string;
     tamaño: string;

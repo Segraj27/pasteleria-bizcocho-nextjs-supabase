@@ -93,10 +93,7 @@ export default function Carrito() {
           {cart.map((item) => (
             <div key={item.id} className={styles.premiumCard}>
               <div className={styles.imageContainer}>
-              <img 
-                    src={item.imagen_url || item.imagen || "/placeholder-cake.jpg"} 
-    alt={item.nombre} 
-  />
+              <img src={ item.imagen || "/placeholder-cake.jpg"} alt={item.nombre} />
               </div>
 
               <div className={styles.infoContainer}>
