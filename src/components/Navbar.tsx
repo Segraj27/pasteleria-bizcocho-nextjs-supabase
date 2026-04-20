@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabaseClient";
 import UserDropdown from "./userdropdown/userdropdown";
 import navbarCSS from "./navbarCss/navbar.module.css";
 
+
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -109,7 +110,7 @@ export default function Navbar() {
       <div className="container">
         {/* 1. LOGO IZQUIERDA */}
         <Link href="/" className="navbar-brand fw-bold" >
-           <h4> 🍰 Pastelería El Bizcocho</h4>
+           <h4 className="titulo"> 🍰 Pastelería El Bizcocho</h4>
         </Link>
 
         <button className="navbar-toggler" onClick={toggleMenu}>

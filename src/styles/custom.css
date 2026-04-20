@@ -31,6 +31,25 @@
   width: 100%;
 }
 
+/* ===== Font Letra Personalizada para Titulos ===== */
+@font-face {
+  font-family: 'Smoothy';
+  src: url('/fonts-tipografia/Smoothy%20Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.titulo {
+  /* Fuente */
+  font-family: 'Smoothy Regular', cursive ;
+  font-size: 33px;
+  color: #fffefee9;
+
+  font-family: 'Smoothy', cursive;
+  font-weight: normal;
+  
+}
+
 .btn-cta {
   background: linear-gradient(135deg, #ffab91, #ff8a65);
   color: #4e342e;
@@ -75,9 +94,10 @@
 }
 
 .hero-title {
-  padding-top: 34px;
-  font-size: 2.8rem;
-  font-weight: 700;
+  padding-top: 30px;
+  font-family: 'Smoothy', cursive;
+  font-size: 65px;
+  font-weight: normal;
   color: #4e342e;
   margin-bottom: 1rem;
 }
