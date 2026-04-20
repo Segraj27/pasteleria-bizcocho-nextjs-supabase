@@ -44,7 +44,6 @@
   font-family: 'Smoothy Regular', cursive ;
   font-size: 33px;
   color: #f7f7f7db;
-
   font-family: 'Smoothy', cursive;
   font-weight: normal;
   
@@ -94,12 +93,11 @@
 }
 
 .hero-title {
-  padding-top: 30px;
+ 
   font-family: 'Smoothy', cursive;
-  font-size: 65px;
+  font-size: 57px;
   font-weight: normal;
   color: #4e342e;
-  margin-bottom: 1rem;
 }
 
 .hero-subtitle {

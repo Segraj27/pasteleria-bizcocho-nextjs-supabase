@@ -58,21 +58,11 @@ export default function HomePage() {
           {/* HERO */}
           <section className="hero" style={{ paddingTop: "75px", paddingBottom: "50px" }} >
             <div className="container text-center"  >
-              <h1 className="hero-title">
+              <h1 style={{ paddingTop: "45px"}}>
                 {/* Primer escalón */}
-                <span className="hero-title" >
-                  🎂 "Pasteles personalizados
-                </span>
-
-                {/* Segundo escalón (puedes darle un margen a la izquierda si quieres escalera física) */}
-                <span className="hero-title" style={{display: "block"}}>
-                  para tus Momentos
-                </span>
-
-                {/* Tercer escalón */}
-                <span className="hero-title" style={{ display: "block", paddingBottom: "20px" }}>
-                  Especiales" 🍩
-                </span>
+                <span className="hero-title" style={{ display: "block", marginLeft: "-260px" }}>🧁"Pasteles Personalizados</span>
+                 <span className="hero-title" style={{ display: "block", marginLeft: "30px" }}>para tus Momentos</span>
+                 <span className="hero-title" style={{ display: "block", marginLeft: "380px" }}>Especiales" 🍩</span>
               </h1>
 
               <p className="hero-subtitle">
