@@ -56,12 +56,23 @@ export default function HomePage() {
 
         <main>
           {/* HERO */}
-          <section className="hero" style={{ paddingTop: "140px", paddingBottom: "120px" }} >
+          <section className="hero" style={{ paddingTop: "75px", paddingBottom: "50px" }} >
             <div className="container text-center"  >
               <h1 className="hero-title">
-                🎂 Pasteles personalizados 
-                <h2 className="hero-title">para tus Momentos </h2>
-                  <h3 className="hero-title" style={{paddingBottom: "15px"}}>Especiales 🍩</h3>
+                {/* Primer escalón */}
+                <span className="hero-title" >
+                  🎂 "Pasteles personalizados
+                </span>
+
+                {/* Segundo escalón (puedes darle un margen a la izquierda si quieres escalera física) */}
+                <span className="hero-title" style={{display: "block"}}>
+                  para tus Momentos
+                </span>
+
+                {/* Tercer escalón */}
+                <span className="hero-title" style={{ display: "block", paddingBottom: "20px" }}>
+                  Especiales" 🍩
+                </span>
               </h1>
 
               <p className="hero-subtitle">
@@ -69,7 +80,7 @@ export default function HomePage() {
                 hechos a mano, con amor y los mejores ingredientes.
               </p>
 
-              <div className="hero-actions" style={{display:"flex", justifyContent: "flex-end", paddingRight: "10px"}}>
+              <div className="hero-actions" style={{ display: "flex", justifyContent: "flex-end", paddingRight: "10px" }}>
                 <a href="/pasteles" className="btn btn-cta btn-lg">
                   <i className="bi bi-cake2 me-2"></i>
                   Hacer mi pedido
