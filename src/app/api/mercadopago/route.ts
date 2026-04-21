@@ -18,23 +18,35 @@ export async function POST(request: Request) {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value;
+          getAll() {
+            return cookieStore.getAll(); // 👈 Importante: Pasa todas las cookies de una vez
           },
-           set() {},
-           remove() {},
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options)
+              );
+            } catch {
+              // Esto a veces falla en Server Components, pero el Middleware lo respalda
+            }
+          },
         },
       }
     );
 
     // 👤 Obtener usuario autenticado
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+     console.log("¿Hay usuario?:", !!user);
+     console.log("ID del usuario:", user?.id);
+     console.log("Error de Auth:", userError?.message);
 
     // ❌ Si no hay usuario, bloquea el pago
     if (!user) {
-      return Response.json({ error: "No autenticado" }, { status: 401 });
+      return Response.json({
+        error: "No autenticado",
+      details: userError?.message
+      }, { status: 401 });
     }
 
     // 📦 Recibir datos enviados desde el carrito
