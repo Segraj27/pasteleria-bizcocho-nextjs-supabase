@@ -6,14 +6,20 @@ import Footer from "@/components/Footer";
 import styles from "@/app/page.module.css"; // Asegúrate de tener este módulo para el layout
 
 export default function HomePage() {
+
   useEffect(() => {
+
     const elements = document.querySelectorAll(".fade-in");
 
     const observer = new IntersectionObserver(
       (entries) => {
+
         entries.forEach((entry) => {
+
           if (entry.isIntersecting) {
+
             entry.target.classList.add("visible");
+
             observer.unobserve(entry.target);
           }
         });
@@ -24,7 +30,12 @@ export default function HomePage() {
     elements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
+
   }, []);
+
+  // =================================
+  // LISTA PASTELES
+  // =================================
 
   const pasteles = [
     {
@@ -48,62 +59,159 @@ export default function HomePage() {
   ];
 
   return (
-    /* 1. Contenedor Maestro: Mantiene el Footer al fondo */
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
 
-      {/* 2. Wrapper del Contenido: Aquí manejamos el carrusel lateral */}
-      <div className={styles.mainGrid} style={{ flex: 1 }}>
+    // =================================
+    // CONTENEDOR PRINCIPAL
+    // =================================
+
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh"
+      }}
+    >
+
+      {/* =================================
+          WRAPPER CONTENIDO
+      ================================= */}
+
+      <div
+        className={styles.mainGrid}
+        style={{ flex: 1 }}
+      >
 
         <main>
-          {/* HERO */}
-          <section className="hero" style={{ paddingTop: "75px", paddingBottom: "50px" }} >
-            <div className="container text-center"  >
+
+          {/* =================================
+              HERO
+          ================================= */}
+
+          <section
+            className="hero"
+            style={{
+              paddingTop: "75px",
+              paddingBottom: "50px"
+            }}
+          >
+
+            <div
+              className="container text-center"
+            >
+
+              {/* =================================
+                  TÍTULO HERO
+              ================================= */}
+
               <h1 style={{ paddingTop: "45px"}}>
-                {/* Primer escalón */}
-                <span className="hero-title" style={{ display: "block", marginLeft: "-260px" }}>🧁"Pasteles Personalizados</span>
-                 <span className="hero-title" style={{ display: "block", marginLeft: "30px" }}>para tus Momentos</span>
-                 <span className="hero-title" style={{ display: "block", marginLeft: "380px" }}>Especiales" 🍩</span>
+
+                <span
+                  className="hero-title"
+                  style={{
+                    display: "block",
+                    marginLeft: "-260px"
+                  }}
+                >
+                  🧁"Pasteles Personalizados
+                </span>
+
+                <span
+                  className="hero-title"
+                  style={{
+                    display: "block",
+                    marginLeft: "30px"
+                  }}
+                >
+                  para tus Momentos
+                </span>
+
+                <span
+                  className="hero-title"
+                  style={{
+                    display: "block",
+                    marginLeft: "380px"
+                  }}
+                >
+                  Especiales" 🍩
+                </span>
+
               </h1>
 
+              {/* =================================
+                  SUBTÍTULO
+              ================================= */}
+
               <p className="hero-subtitle">
-                En <strong>Pastelería El Bizcocho</strong> creamos pasteles únicos,
-                hechos a mano, con amor y los mejores ingredientes.
+
+                En <strong>Pastelería El Bizcocho</strong>
+                creamos pasteles únicos,
+                hechos a mano,
+                con amor y los mejores ingredientes.
+
               </p>
 
-              <div className="hero-actions" style={{ display: "flex", justifyContent: "flex-end", paddingRight: "10px" }}>
-                <a href="/pasteles" className="btn btn-cta btn-lg">
-                  <i className="bi bi-cake2 me-2"></i>
-                  Hacer mi pedido
-                </a>
-              </div>
+              {/* =================================
+                  BOTÓN ELIMINADO
+              =================================
+              Se eliminó:
+              "Hacer mi pedido"
+              para que ya no aparezca.
+              ================================= */}
+
             </div>
           </section>
 
-          {/* PASTELES */}
+          {/* =================================
+              SECCIÓN PASTELES
+          ================================= */}
+
           <section className="pasteles">
+
             <div className="container">
+
               <h2 className="section-title text-center mb-5">
+
                 Nuestros pasteles más pedidos🥮
+
               </h2>
 
+              {/* =================================
+                  GRID CARDS
+              ================================= */}
+
               <div className="row g-4">
-                {/* 2. Mapeamos el array para no repetir con el json de pasteles */}
+
                 {pasteles.map((pastel) => (
-                  <div key={pastel.id} className="col-md-4 fade-in">
+
+                  <div
+                    key={pastel.id}
+                    className="col-md-4 fade-in"
+                  >
+
                     <PastelCard
                       titulo={pastel.titulo}
                       descripcion={pastel.descripcion}
                       imagen={pastel.imagen}
                     />
+
                   </div>
+
                 ))}
+
               </div>
+
             </div>
           </section>
 
         </main>
 
       </div>
+
+      {/* =================================
+          FOOTER
+      ================================= */}
+
+      <Footer />
 
     </div>
   );
