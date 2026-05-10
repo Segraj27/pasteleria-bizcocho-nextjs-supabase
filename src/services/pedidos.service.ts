@@ -60,26 +60,15 @@ export async function createPedido(data: PedidoInput, token: string) {
 }
 
 // OBTENER PEDIDOS
-export async function getPedidosByUser(token: string) {
-  const supabase = getSupabaseWithAuth(token);
-
-  console.log("TOKEN RECIBIDO:", token);
-
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-
-  console.log("USER DATA:", userData);
-  console.log("USER ERROR:", userError);
-
-  const user = userData?.user;
-
-  if (!user) {
-    throw new Error("Usuario no autenticado");
-  }
+export async function getAllPedidos() {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  );
 
   const { data, error } = await supabase
     .from("pedidos")
     .select("*")
-    .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
   if (error) throw error;

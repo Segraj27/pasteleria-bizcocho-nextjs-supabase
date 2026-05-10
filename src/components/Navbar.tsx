@@ -9,7 +9,6 @@ import UserDropdown from "./userdropdown/userdropdown";
 import navbarCSS from "./navbarCss/navbar.module.css";
 
 export default function Navbar() {
-
   // =================================
   // ROUTER
   // =================================
@@ -47,7 +46,6 @@ export default function Navbar() {
   // =================================
 
   useEffect(() => {
-
     const onScroll = () => {
       setScrolled(window.scrollY > 10);
     };
@@ -57,7 +55,6 @@ export default function Navbar() {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-
   }, []);
 
   // =================================
@@ -70,7 +67,6 @@ export default function Navbar() {
   // =================================
 
   const fetchUserRole = async (userId: string) => {
-
     const { data: profile, error } = await supabase
       .from("profiles")
       .select("role")
@@ -81,6 +77,8 @@ export default function Navbar() {
       console.error("Error obteniendo rol:", error);
       return;
     }
+    console.log("PROFILE:", profile);
+    console.log("ROLE:", profile?.role);
 
     // Guardar rol
     setRole(profile?.role || "user");
@@ -91,10 +89,8 @@ export default function Navbar() {
   // =================================
 
   useEffect(() => {
-
     // Obtener usuario actual
     const getUser = async () => {
-
       const { data } = await supabase.auth.getUser();
 
       const currentUser = data.user;
@@ -105,6 +101,8 @@ export default function Navbar() {
       // Si existe usuario → obtener rol
       if (currentUser) {
         await fetchUserRole(currentUser.id);
+      } else {
+        setRole(null);
       }
     };
 
@@ -118,29 +116,24 @@ export default function Navbar() {
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
-
         const currentUser = session?.user ?? null;
 
         setUser(currentUser);
 
         // Si existe usuario → obtener rol
         if (currentUser) {
-
           await fetchUserRole(currentUser.id);
-
         } else {
-
           // Limpiar rol
           setRole(null);
         }
-      }
+      },
     );
 
     // Limpiar listener
     return () => {
       listener.subscription.unsubscribe();
     };
-
   }, []);
 
   // =================================
@@ -148,7 +141,6 @@ export default function Navbar() {
   // =================================
 
   const handleLogout = async () => {
-
     // CORRECCIÓN:
     // Actualización inmediata UI
     setUser(null);
@@ -158,16 +150,13 @@ export default function Navbar() {
     if (isOpen) setIsOpen(false);
 
     try {
-
       // Logout Supabase
       await supabase.auth.signOut();
 
       // Redirección
       router.push("/");
       router.refresh();
-
     } catch (error) {
-
       console.error("Error al cerrar sesión:", error);
 
       // Fallback extremo
@@ -180,7 +169,6 @@ export default function Navbar() {
   // =================================
 
   return (
-
     <nav
       style={{
         position: "sticky",
@@ -193,29 +181,20 @@ export default function Navbar() {
         scrolled ? "scrolled" : ""
       }`}
     >
-
       <div className="container">
-
         {/* =================================
             LOGO
         ================================= */}
 
         <Link href="/" className="navbar-brand fw-bold">
-
-          <h1 className="titulo">
-            🍰 Pastelería El Bizcocho 🍪
-          </h1>
-
+          <h1 className="titulo">🍰 Pastelería El Bizcocho 🍪</h1>
         </Link>
 
         {/* =================================
             BOTÓN RESPONSIVE
         ================================= */}
 
-        <button
-          className="navbar-toggler"
-          onClick={toggleMenu}
-        >
+        <button className="navbar-toggler" onClick={toggleMenu}>
           <span className="navbar-toggler-icon"></span>
         </button>
 
@@ -223,14 +202,8 @@ export default function Navbar() {
             MENÚ NAVBAR
         ================================= */}
 
-        <div
-          className={`collapse navbar-collapse ${
-            isOpen ? "show" : ""
-          }`}
-        >
-
+        <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`}>
           <div className="d-flex ms-auto align-items-center gap-3 mt-3 mt-lg-0">
-
             {/* =================================
                 BOTÓN HACER PEDIDO
             =================================
@@ -261,7 +234,6 @@ export default function Navbar() {
 
             {!user ? (
               <>
-
                 <Link
                   href="/login"
                   className="nav-link text-white small"
@@ -277,11 +249,9 @@ export default function Navbar() {
                 >
                   Registrate
                 </Link>
-
               </>
             ) : (
               <>
-
                 {/* =================================
                     ADMINISTRADOR
                 =================================
@@ -312,10 +282,8 @@ export default function Navbar() {
                   role={role}
                   handleLogout={handleLogout}
                 />
-
               </>
             )}
-
           </div>
         </div>
       </div>
@@ -335,7 +303,6 @@ export default function Navbar() {
           zIndex: -100,
         }}
       />
-
     </nav>
   );
 }

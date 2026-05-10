@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createPedido, getPedidosByUser } from "@/services/pedidos.service";
+import { createPedido, getAllPedidos } from "@/services/pedidos.service";
 
 export async function POST(request: Request) {
   try {
@@ -42,17 +42,9 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const authHeader = request.headers.get("authorization");
-
-    if (!authHeader) {
-      return NextResponse.json({ error: "No autenticado" }, { status: 401 });
-    }
-
-    const token = authHeader.replace("Bearer ", "");
-
-    const pedidos = await getPedidosByUser(token);
+    const pedidos = await getAllPedidos();
 
     return NextResponse.json(pedidos, { status: 200 });
   } catch (error) {
