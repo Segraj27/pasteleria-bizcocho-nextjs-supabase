@@ -3,10 +3,10 @@ describe('Registro de usuario', () => {
     cy.visit('http://localhost:3000/register')
 
     cy.get('input').eq(0).type('Valentina Pulido')
-    cy.get('input').eq(1).type('3115732559')
+    cy.get('input').eq(1).type('3115732579')
 
-    cy.get('input[type="email"]').first().type(`test${Date.now()}@gmail.com`)
-    cy.get('input[type="password"]').first().type('52163535')
+    cy.get('input[type="email"]').first().type(`test12345@gmail.com`)
+    cy.get('input[type="password"]').first().type('52163735')
 
     cy.contains('button', 'Registrarme').click()
 

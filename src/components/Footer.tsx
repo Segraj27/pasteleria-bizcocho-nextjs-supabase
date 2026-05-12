@@ -1,103 +1,216 @@
 "use client";
 
+import {
+  Camera,
+  MessageCircle,
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Globe,
+} from "lucide-react";
+
 export default function Footer() {
   return (
-    <footer style={{
-      backgroundColor: "#3D2B1F", // Café chocolate oscuro
-      color: "#F1E9E4", // Texto crema suave
-      padding: "60px 20px 20px 20px",
-      marginTop: "auto", // Empuja al fondo en layouts flex
-      borderTop: "4px solid #D4A373", // Línea dorada sutil
-      fontFamily: "'Montserrat', sans-serif"
-    }}>
-      <div style={{
-        maxWidth: "1550px",
-        margin: "0 auto",
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-        gap: "40px",
-        paddingBottom: "40px",
-        borderBottom: "1px solid rgba(241, 233, 228, 0.1)"
-      }}>
-        
-        {/* Columna 1: Marca y Esencia */}
+    <footer
+      style={{
+        backgroundColor: "#3D2B1F",
+        color: "#F1E9E4",
+        padding: "65px 20px 25px",
+        marginTop: "auto",
+        borderTop: "3px solid #D4A373",
+        fontFamily: "'Montserrat', sans-serif",
+      }}
+    >
+      {/* Contenido principal */}
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "1.3fr 1fr",
+          gap: "120px",
+          alignItems: "start",
+          paddingBottom: "40px",
+          borderBottom: "1px solid rgba(241, 233, 228, 0.12)",
+        }}
+      >
+        {/* Columna izquierda */}
         <div>
-          <h2 style={{ 
-            fontFamily: "'Playfair Display', serif", 
-            color: "#D4A373", 
-            fontSize: "1.8rem",
-            marginBottom: "15px" 
-          }}>
+          <h2
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              color: "#D4A373",
+              fontSize: "3rem",
+              marginBottom: "22px",
+              lineHeight: "1.1",
+            }}
+          >
             Pastelería El Bizcocho
           </h2>
-          <p style={{ fontSize: "0.9rem", lineHeight: "1.6", opacity: 0.8 }}>
-            Creamos momentos dulces con procesos artesanales y los mejores ingredientes. 
-            Un toque de elegancia en cada bocado.
+
+          <p
+            style={{
+              fontSize: "1.1rem",
+              lineHeight: "1.9",
+              color: "#F1E9E4",
+              maxWidth: "620px",
+              fontWeight: "500",
+            }}
+          >
+            Postres artesanales elaborados con pasión, elegancia y los mejores
+            ingredientes para cada ocasión especial.
           </p>
+
+          {/* Redes sociales */}
+          <div
+            style={{
+              display: "flex",
+              gap: "28px",
+              marginTop: "35px",
+              flexWrap: "wrap",
+            }}
+          >
+            {[
+              {
+                name: "Instagram",
+                icon: <Camera size={22} />,
+                link: "https://instagram.com",
+              },
+              {
+                name: "Facebook",
+                icon: <Globe size={22} />,
+                link: "https://facebook.com",
+              },
+              {
+                name: "WhatsApp",
+                icon: <MessageCircle size={22} />,
+                link: "https://wa.me/573001234567",
+              },
+            ].map((red) => (
+              <a
+                key={red.name}
+                href={red.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  color: "#F1E9E4",
+                  textDecoration: "none",
+                  transition: "all 0.3s ease",
+                  fontSize: "1rem",
+                  fontWeight: "600",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "#D4A373";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "#F1E9E4";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                {red.icon}
+                {red.name}
+              </a>
+            ))}
+          </div>
         </div>
 
-        {/* Columna 2: Enlaces Rápidos */}
-        <div>
-          <h4 style={{ color: "#D4A373", marginBottom: "20px", fontSize: "1.1rem" }}>Explora</h4>
-          <ul style={{ listStyle: "none", padding: 0, fontSize: "0.9rem", lineHeight: "2" }}>
-            <li><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Nuestra Lista</a></li>
-            <li><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Personalizados</a></li>
-            <li><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Sobre Nosotros</a></li>
-            <li><a href="#" style={{ color: "inherit", textDecoration: "none" }}>Contacto</a></li>
-          </ul>
-        </div>
+        {/* Columna derecha */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <h4
+            style={{
+              color: "#D4A373",
+              marginBottom: "22px",
+              fontSize: "1.4rem",
+              fontWeight: "700",
+            }}
+          >
+            Contacto
+          </h4>
 
-        {/* Columna 3: Suscripción "Dulce" */}
-        <div>
-          <h4 style={{ color: "#D4A373", marginBottom: "20px", fontSize: "1.1rem" }}>Únete al Club</h4>
-          <p style={{ fontSize: "0.85rem", marginBottom: "15px" }}>Recibe recetas y ofertas exclusivas.</p>
-          <div style={{ display: "flex", gap: "10px" }}>
-            <input 
-              type="email" 
-              placeholder="Tu correo" 
-              style={{
-                padding: "10px 15px",
-                borderRadius: "50px",
-                border: "1px solid rgba(212, 163, 115, 0.3)",
-                backgroundColor: "rgba(255,255,255,0.05)",
-                color: "white",
-                flex: 1,
-                outline: "none"
-              }} 
-            />
-            <button style={{
-              backgroundColor: "#D4A373",
-              color: "#3D2B1F",
-              border: "none",
-              padding: "10px 20px",
-              borderRadius: "50px",
-              fontWeight: "bold",
-              cursor: "pointer"
-            }}>
-              Ir
-            </button>
+          {/* Información de contacto */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              fontSize: "1rem",
+              color: "#FFFFFF",
+              fontWeight: "600",
+              letterSpacing: "0.3px",
+              opacity: 1,
+
+            }}
+          >
+            {[
+              {
+                icon: <MapPin size={22} color="#D4A373" />,
+                text: "Bogotá, Colombia",
+              },
+              {
+                icon: <Phone size={22} color="#D4A373" />,
+                text: "+57 300 222 3355",
+              },
+              {
+                icon: <Mail size={22} color="#D4A373" />,
+                text: "contacto@elbizcocho.com",
+              },
+              {
+                icon: <Clock size={22} color="#D4A373" />,
+                text: "Lunes a Sábado · 8:00 AM – 7:00 PM",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "14px",
+                }}
+              >
+                {item.icon}
+                {/* <span>{item.text}</span> */}
+                <span
+                  style={{
+                    color: "#F5E6D3",
+                    fontWeight: "600",
+                  }}
+                >
+                  {item.text}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Parte Inferior: Copyright y Redes */}
-      <div style={{
-        maxWidth: "1200px",
-        margin: "20px auto 0",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexWrap: "wrap",
-        fontSize: "0.8rem",
-        opacity: 0.6
-      }}>
-        <p>© 2026 Pastelería El Bizcocho. Todos los derechos reservados.</p>
-        <div style={{ display: "flex", gap: "20px" }}>
-          <span style={{ cursor: "pointer" }}>Instagram</span>
-          <span style={{ cursor: "pointer" }}>Facebook</span>
-          <span style={{ cursor: "pointer" }}>WhatsApp</span>
-        </div>
+      {/* Parte inferior */}
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "25px auto 0",
+          textAlign: "center",
+          fontSize: "0.95rem",
+          opacity: 0.9,
+          color: "#E6D5C8",
+          fontWeight: "500",
+        }}
+      >
+        <p>
+          © 2026 Pastelería El Bizcocho. Todos los derechos reservados.
+        </p>
       </div>
     </footer>
   );
 }
+
