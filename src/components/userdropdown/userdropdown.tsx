@@ -102,8 +102,8 @@ export default function UserDropdown({
             NOMBRE + ROLE
         =================================
         CORRECCIÓN:
-        Ahora el rol aparece
-        entre paréntesis.
+        Solo el admin verá
+        el rol entre paréntesis.
         ================================= */}
 
         <div className="d-none d-md-flex align-items-center gap-1">
@@ -117,17 +117,17 @@ export default function UserDropdown({
           </span>
 
           {/* =================================
-              ROLE ENTRE PARÉNTESIS
+              ROLE SOLO ADMIN
           ================================= */}
 
-          {role && (
+          {role === "admin" && (
             <span
               className="text-white-50"
               style={{
                 fontSize: "0.9rem",
               }}
             >
-              ({role})
+              (admin)
             </span>
           )}
         </div>
