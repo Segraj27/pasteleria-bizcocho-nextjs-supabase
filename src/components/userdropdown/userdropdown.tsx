@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -99,9 +98,39 @@ export default function UserDropdown({
           {inicial}
         </div>
 
-        <span className="fw-bold text-white d-none d-md-inline">
-          {name}
-        </span>
+        {/* =================================
+            NOMBRE + ROLE
+        =================================
+        CORRECCIÓN:
+        Ahora el rol aparece
+        entre paréntesis.
+        ================================= */}
+
+        <div className="d-none d-md-flex align-items-center gap-1">
+
+          {/* =================================
+              NOMBRE USUARIO
+          ================================= */}
+
+          <span className="fw-bold text-white">
+            {name}
+          </span>
+
+          {/* =================================
+              ROLE ENTRE PARÉNTESIS
+          ================================= */}
+
+          {role && (
+            <span
+              className="text-white-50"
+              style={{
+                fontSize: "0.9rem",
+              }}
+            >
+              ({role})
+            </span>
+          )}
+        </div>
       </button>
 
       {/* =================================
