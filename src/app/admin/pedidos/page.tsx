@@ -115,10 +115,16 @@ export default function PedidosPage() {
 
         const data = await res.json();
 
+        // =================================
+        // DEBUG API
+        // =================================
+
         console.log("PEDIDOS API:", data);
 
         // =================================
-        // GUARDAR PEDIDOS
+        // CORRECCIÓN:
+        // La API devuelve directamente
+        // el array de pedidos.
         // =================================
 
         setPedidos(data || []);
@@ -134,7 +140,7 @@ export default function PedidosPage() {
     };
 
     initPage();
-  }, []);
+  }, [router]);
 
   // =================================
   // CAMBIAR ESTADO PEDIDO
@@ -166,16 +172,19 @@ export default function PedidosPage() {
     });
 
     const data = await res.json();
+
+    // =================================
+    // DEBUG API
+    // =================================
+
     console.log("DATA API:", data);
-    console.log("ES ARRAY:", Array.isArray(data));
-    console.log("LONGITUD:", data.length);
 
     // =================================
     // CORRECCIÓN:
-    // Actualizar correctamente
-    // la lista de pedidos.
+    // La API devuelve directamente
+    // el array.
     // =================================
-    console.log("PEDIDOS RECIBIDOS:", data);
+
     setPedidos(data || []);
   };
 
@@ -194,7 +203,13 @@ export default function PedidosPage() {
   if (isChecking) {
     return null;
   }
+
+  // =================================
+  // DEBUG STATE
+  // =================================
+
   console.log("STATE PEDIDOS:", pedidos);
+
   // =================================
   // RENDER
   // =================================
@@ -236,63 +251,83 @@ export default function PedidosPage() {
 
         <tbody>
           {/* =================================
-              MAP PEDIDOS
+              VALIDAR SI HAY PEDIDOS
           ================================= */}
 
-          {pedidos.map((pedido) => (
-            <tr key={pedido.id}>
-              {/* ID */}
-              <td>{pedido.id.slice(0, 8)}</td>
-
-              {/* Cantidad */}
-              <td>{pedido.cantidad}</td>
-
-              {/* Estado */}
-              <td>
-                <span
-                  className={`badge ${
-                    pedido.estado === "pendiente"
-                      ? "bg-warning"
-                      : pedido.estado === "entregado"
-                        ? "bg-success"
-                        : "bg-danger"
-                  }`}
-                >
-                  {pedido.estado}
-                </span>
-              </td>
-
-              {/* Fecha */}
-              <td>{new Date(pedido.created_at).toLocaleDateString()}</td>
-
-              {/* Botones */}
-              <td>
-                <div className="d-flex gap-2">
-                  {/* =================================
-                      BOTÓN ENTREGAR
-                  ================================= */}
-
-                  <button
-                    className="btn btn-success btn-sm"
-                    onClick={() => cambiarEstado(pedido.id, "entregado")}
-                  >
-                    Entregar
-                  </button>
-
-                  {/* =================================
-                      BOTÓN CANCELAR
-                  ================================= */}
-
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => cambiarEstado(pedido.id, "cancelado")}
-                  >
-                    Cancelar
-                  </button>
-                </div>
+          {pedidos.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="text-center">
+                No hay pedidos registrados
               </td>
             </tr>
-          ))}
+          ) : (
+            <>
+              {/* =================================
+                  MAP PEDIDOS
+              ================================= */}
+
+              {pedidos.map((pedido) => (
+                <tr key={pedido.id}>
+                  {/* ID */}
+                  <td>{pedido.id.slice(0, 8)}</td>
+
+                  {/* Cantidad */}
+                  <td>{pedido.cantidad}</td>
+
+                  {/* Estado */}
+                  <td>
+                    <span
+                      className={`badge ${
+                        pedido.estado === "pendiente"
+                          ? "bg-warning"
+                          : pedido.estado === "entregado"
+                            ? "bg-success"
+                            : "bg-danger"
+                      }`}
+                    >
+                      {pedido.estado}
+                    </span>
+                  </td>
+
+                  {/* Fecha */}
+                  <td>
+                    {new Date(pedido.created_at).toLocaleDateString()}
+                  </td>
+
+                  {/* Botones */}
+                  <td>
+                    <div className="d-flex gap-2">
+                      {/* =================================
+                          BOTÓN ENTREGAR
+                      ================================= */}
+
+                      <button
+                        className="btn btn-success btn-sm"
+                        onClick={() =>
+                          cambiarEstado(pedido.id, "entregado")
+                        }
+                      >
+                        Entregar
+                      </button>
+
+                      {/* =================================
+                          BOTÓN CANCELAR
+                      ================================= */}
+
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() =>
+                          cambiarEstado(pedido.id, "cancelado")
+                        }
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </>
+          )}
         </tbody>
       </table>
     </div>
