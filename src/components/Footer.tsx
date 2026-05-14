@@ -75,12 +75,12 @@ export default function Footer() {
               {
                 name: "Instagram",
                 icon: <Camera size={22} />,
-                link: "https://instagram.com",
+                link: "https://www.instagram.com/pasteleria_elbizcocho_/",
               },
               {
                 name: "Facebook",
                 icon: <Globe size={22} />,
-                link: "https://facebook.com",
+                link: "https://web.facebook.com/profile.php?id=61589581266610",
               },
               {
                 name: "WhatsApp",
