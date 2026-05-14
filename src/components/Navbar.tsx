@@ -176,6 +176,7 @@ export default function Navbar() {
         marginBottom: "0px",
         zIndex: 1000,
         overflow: "visible",
+        backgroundColor: "#5A2D1A",
     
       }}
       className={`navbar navbar-expand-lg ${navbarCSS.miNavbar} navbar-dark py-2 ${
@@ -318,7 +319,7 @@ export default function Navbar() {
         className={navbarCSS.drip}
         style={{
           position: "absolute",
-          top: 0,
+          top: "23%",
           width: "100%",
           backgroundImage: "url('/drip.png')",
           lineHeight: 0,
