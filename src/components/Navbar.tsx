@@ -176,19 +176,41 @@ export default function Navbar() {
         marginBottom: "0px",
         zIndex: 1000,
         overflow: "visible",
+    
       }}
       className={`navbar navbar-expand-lg ${navbarCSS.miNavbar} navbar-dark py-2 ${
         scrolled ? "scrolled" : ""
       }`}
     >
-      <div className="container">
-        {/* =================================
-            LOGO
-        ================================= */}
+<div className="container">
+  {/* =================================
+      LOGO
+  ================================= */}
 
-        <Link href="/" className="navbar-brand fw-bold">
-          <h1 className="titulo">🍰 Pastelería El Bizcocho 🍪</h1>
-        </Link>
+  <Link
+    href="/"
+    className="navbar-brand fw-bold"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "1px",
+      flexWrap: "nowrap",
+    }}
+  >
+    <img
+      src="/logo.png"
+      alt="Logo Pastelería"
+      style={{
+        width: "110px",
+        height: "70px",
+        objectFit: "contain",
+      }}
+    />
+
+    <h1 className="titulo" style={{ margin: 0 }}>
+      Pastelería El Bizcocho 🍰
+    </h1>
+  </Link>
 
         {/* =================================
             BOTÓN RESPONSIVE

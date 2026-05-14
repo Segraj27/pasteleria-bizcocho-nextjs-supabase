@@ -79,9 +79,17 @@ export default function PedidosPage() {
   if (!user) return null;
 
   return (
-    <div className="container mt-5 "style={{ paddingTop: '65px' }} >
-      <h1 className="text-center mb-4">Panel de pedidos</h1>
-
+    <div className="container mt-5 " style={{ paddingTop: '45px' }} >
+      <h1
+        className="text-center mb-4"
+        style={{
+          color: "black",
+          fontSize: "45px",
+          fontWeight: "bold",
+        }}
+      >
+        Panel de pedidos
+      </h1>
       <table className="table table-bordered table-striped">
         <thead className="table-dark">
           <tr>
@@ -103,13 +111,12 @@ export default function PedidosPage() {
 
                 <td>
                   <span
-                    className={`badge ${
-                      pedido.estado === "pendiente"
+                    className={`badge ${pedido.estado === "pendiente"
                         ? "bg-warning"
                         : pedido.estado === "entregado"
-                        ? "bg-success"
-                        : "bg-danger"
-                    }`}
+                          ? "bg-success"
+                          : "bg-danger"
+                      }`}
                   >
                     {pedido.estado}
                   </span>

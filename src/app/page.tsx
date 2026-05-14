@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import PastelCard from "@/components/PastelCard";
 import Footer from "@/components/Footer";
-import styles from "@/app/page.module.css"; // Asegúrate de tener este módulo para el layout
+import styles from "@/app/page.module.css"; 
 
 export default function HomePage() {
 
