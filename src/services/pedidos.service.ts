@@ -54,7 +54,11 @@ export async function createPedido(data: PedidoInput, token: string) {
     .select()
     .single();
 
-  if (insertError) throw insertError;
+  if (insertError) {
+    console.log("INSERT ERROR:", insertError);
+
+    throw insertError;
+  }
 
   return result;
 }

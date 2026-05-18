@@ -11,7 +11,7 @@ export default function Carrito() {
   const { cart, removeFromCart, clearCart } = useCart();
 
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<unknown>(null);
 
   useEffect(() => {
     document.body.classList.remove("modal-open");
@@ -60,17 +60,17 @@ export default function Carrito() {
 
       const result = await res.json();
 
-      // =================================
-      // CREAR PEDIDOS EN BASE DE DATOS
-      // =================================
-
       const {
         data: { session },
       } = await supabase.auth.getSession();
 
+      console.log("SESSION:", session);
+
       const token = session?.access_token;
 
       for (const item of cart) {
+        console.log("ITEM COMPLETO:", item);
+        console.log("ID ITEM:", item.id);
         await fetch("/api/admin/pedidos", {
           method: "POST",
 
