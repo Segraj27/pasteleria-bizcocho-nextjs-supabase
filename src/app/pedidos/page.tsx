@@ -11,6 +11,9 @@ interface Pedido {
   cantidad: number;
   estado: string;
   created_at: string;
+  pasteles?: {
+    nombre: string;
+  };
 }
 
 export default function PedidosPage() {
@@ -79,7 +82,7 @@ export default function PedidosPage() {
   if (!user) return null;
 
   return (
-    <div className="container mt-5 " style={{ paddingTop: '45px' }} >
+    <div className="container mt-5 " style={{ paddingTop: "45px" }}>
       <h1
         className="text-center mb-4"
         style={{
@@ -94,6 +97,7 @@ export default function PedidosPage() {
         <thead className="table-dark">
           <tr>
             <th>ID</th>
+            <th>Pastel</th>
             <th>Cantidad</th>
             <th>Estado</th>
             <th>Fecha</th>
@@ -106,17 +110,18 @@ export default function PedidosPage() {
             pedidos.map((pedido) => (
               <tr key={pedido.id}>
                 <td>{pedido.id.slice(0, 8)}</td>
-
+                <td>{pedido.pasteles?.nombre}</td>
                 <td>{pedido.cantidad}</td>
 
                 <td>
                   <span
-                    className={`badge ${pedido.estado === "pendiente"
+                    className={`badge ${
+                      pedido.estado === "pendiente"
                         ? "bg-warning"
                         : pedido.estado === "entregado"
                           ? "bg-success"
                           : "bg-danger"
-                      }`}
+                    }`}
                   >
                     {pedido.estado}
                   </span>

@@ -72,7 +72,14 @@ export async function getAllPedidos() {
 
   const { data, error } = await supabase
     .from("pedidos")
-    .select("*")
+    .select(
+      `
+    *,
+    pasteles (
+      nombre
+    )
+  `,
+    )
     .order("created_at", { ascending: false });
 
   if (error) throw error;
